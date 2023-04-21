@@ -347,7 +347,7 @@ The following are the endpoints available for an Admin at Group level
 ## create-conf
 
 ### Overview
-This command is used to create a cluster configuration with all the available configurations for a specific cluster type
+This command is used to create a cluster configuration with all the required configurations for a specific cluster type
 
 | Request URL             |  HTTP method         | Required features  |
 |-------------------------|----------------------|--------------------|
