@@ -342,3 +342,91 @@ The following are the endpoints available for an Admin at Group level
 - [get-role-groups](#get-role-groups-1)
 - [create-group-role](#create-group-role-1)
 - [delete-group-role](#delete-group-role-1)
+
+
+## create-conf
+
+### Overview
+This command is used to create a cluster configuration with all the available configurations for a specific cluster type
+
+
+| Request URL         | /api/v1/cluster/conf   |
+| HTTP method         | POST                   |
+| Required features   |                        |
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+| name                                               | A unique to be given to identify the cluster config                                                         |
+| description                                        |                                                              |
+| cloud_project_id                                   | A short description about for which purpose it is used                                                         |
+| object_storage_manager_id	                         |                                                              |
+| credentials_conf_id                                | id of the osm that is created                                                          |
+| machine_conf_id	                                 | id of the machine configuration that is created                                                            |
+| spark_config_id                                    | Provide spark_config_id to create-conf.                                                        |
+| hive_metastore_conf_id	                         |  Provide hive_metastore_conf_id to create-conf.                                                            |
+| cloud_provider_id                                  | Provide cloud_provider_id to create-conf.                                                        |
+| spark_infra_version_id	                         | Provide spark_infra_version_id to create-conf.                                                             |
+| max_parallel_spark_job_execution_per_instance      | Provide max_parallel_spark_job_execution_per_instance to create-conf. (default: 5)                                                         |
+| standalone_workers_number	                         | Provide standalone_workers_number to create-conf.                                                            |
+| cluster_type [yeedu, standalone, cluster]          | Provide cluster_type to create-conf.                                                        |
+| min_instances	                                     | Provide min_instances to create-conf.                                                             |
+| max_instances                                      | Provide max_instances to create-conf.                                                        |
+| is_cuda	                                         | Provide is_cuda to create-conf.                                                              |
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/cluster/conf
+ {
+  "name": "yeedu_cluster",
+  "description": "Cluster Configurations test",
+  "cloud_project_id": "modak-yeedu",
+  "object_storage_manager_id": 1,
+  "credentials_conf_id": 1,
+  "machine_conf_id": 1,
+  "cloud_provider_id": 0,
+  "spark_infra_version_id": 0,
+  "engine_cluster_spark_config": {
+    "max_parallel_spark_job_execution_per_instance": 5
+  },
+  "cluster_type": "YEEDU",
+  "min_instances": 1,
+  "max_instances": 3,
+  "is_cuda": false
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "cluster_conf_id": "1",
+  "name": "yeedu_cluster",
+  "description": "Cluster Configurations test",
+  "cloud_project_id": "modak-yeedu",
+  "object_storage_manager_id": "1",
+  "credentials_conf_id": "1",
+  "machine_conf_id": "1",
+  "spark_config_id": null,
+  "hive_metastore_conf_id": null,
+  "cloud_provider_id": "0",
+  "spark_infra_version_id": "0",
+  "engine_cluster_spark_config": {
+    "max_parallel_spark_job_execution_per_instance": 5
+  },
+  "cluster_type": "YEEDU",
+  "min_instances": 1,
+  "max_instances": 2,
+  "is_cuda": false,
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "created_by_id": "3",
+  "modified_by_id": "3",
+  "last_update_date": "2023-03-17T10:20:21.627Z",
+  "from_date": "2023-03-17T10:20:21.627Z",
+  "to_date": null
+}
+```
