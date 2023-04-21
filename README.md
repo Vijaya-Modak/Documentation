@@ -349,16 +349,17 @@ The following are the endpoints available for an Admin at Group level
 ### Overview
 This command is used to create a cluster configuration with all the available configurations for a specific cluster type
 
+| Request URL             |  HTTP method         | Required features  |
+|-------------------------|----------------------|--------------------|
+| /api/v1/cluster/conf    |     POST             |                    |
 
-| Request URL         | /api/v1/cluster/conf   |
-| HTTP method         | POST                   |
-| Required features   |                        |
 
 
 
 ### Parameters
 
 | **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
 | name                                               | A unique to be given to identify the cluster config                                                         |
 | description                                        |                                                              |
 | cloud_project_id                                   | A short description about for which purpose it is used                                                         |
