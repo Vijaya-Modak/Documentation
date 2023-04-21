@@ -360,22 +360,22 @@ This command is used to create a cluster configuration with all the required con
 
 | **Parameter**                                      | **Value**                                                    |
 |----------------------------------------------------|--------------------------------------------------------------|
-| name                                               | A unique to be given to identify the cluster config                                                         |
-| description                                        |                                                              |
-| cloud_project_id                                   | A short description about for which purpose it is used                                                         |
-| object_storage_manager_id	                         |                                                              |
-| credentials_conf_id                                | id of the osm that is created                                                          |
-| machine_conf_id	                                 | id of the machine configuration that is created                                                            |
-| spark_config_id                                    | Provide spark_config_id to create-conf.                                                        |
-| hive_metastore_conf_id	                         |  Provide hive_metastore_conf_id to create-conf.                                                            |
-| cloud_provider_id                                  | Provide cloud_provider_id to create-conf.                                                        |
-| spark_infra_version_id	                         | Provide spark_infra_version_id to create-conf.                                                             |
-| max_parallel_spark_job_execution_per_instance      | Provide max_parallel_spark_job_execution_per_instance to create-conf. (default: 5)                                                         |
-| standalone_workers_number	                         | Provide standalone_workers_number to create-conf.                                                            |
-| cluster_type [yeedu, standalone, cluster]          | Provide cluster_type to create-conf.                                                        |
-| min_instances	                                     | Provide min_instances to create-conf.                                                             |
-| max_instances                                      | Provide max_instances to create-conf.                                                        |
-| is_cuda	                                         | Provide is_cuda to create-conf.                                                              |
+| name                                               | A unique to be given to identify the cluster config          |
+| description                                        | Provide description to create-conf.                          |
+| cloud_project_id                                   | A short description about for which purpose it is used       |
+| object_storage_manager_id	                         | Provide object_storage_manager_id to create-conf.            |
+| credentials_conf_id                                | id of the osm that is created                                |
+| machine_conf_id	                                   | id of the machine configuration that is created              |
+| spark_config_id                                    | Provide spark_config_id to create-conf.                      |
+| hive_metastore_conf_id	                           |  Provide hive_metastore_conf_id to create-conf.              |
+| cloud_provider_id                                  | Provide cloud_provider_id to create-conf.                    |
+| spark_infra_version_id	                           | Provide spark_infra_version_id to create-conf.               |
+| max_parallel_spark_job_execution_per_instance      | Provide max_parallel_spark_job_execution_per_instance to create-conf. (default: 5)   |
+| standalone_workers_number	                         | Provide standalone_workers_number to create-conf.            |
+| cluster_type [yeedu, standalone, cluster]          | Provide cluster_type to create-conf.                         |
+| min_instances	                                     | Provide min_instances to create-conf.                        |
+| max_instances                                      | Provide max_instances to create-conf.                        |
+| is_cuda	                                           | Provide is_cuda to create-conf.                              |
 
 
 ### Sample
@@ -429,5 +429,151 @@ POST /api/v1/cluster/conf
   "last_update_date": "2023-03-17T10:20:21.627Z",
   "from_date": "2023-03-17T10:20:21.627Z",
   "to_date": null
+}
+```
+
+#### list-confs
+This api is used to list all the cluster configurations created
+
+| Request URL             |  HTTP method         | Required features  |
+|-------------------------|----------------------|--------------------|
+| /api/v1/cluster/confs   |     GET              |                    |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cloud provider                                     | Cloud Provider that will be used for filter. (Available values : GCP, AWS, AZURE)   |
+| pageNumber                                         | The page number from which items will return. (Default value : 1)  |
+| limit                                              |  The numbers of items to return. (Default value : 100)  |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/cluster/confs
+{
+  "cloud_provider": 0,
+  "pageNumber": 1,
+  "limit": 100
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "data": [
+    {
+      "cluster_conf_id": "1",
+      "name": "yeedu_cluster",
+      "description": "Cluster Configurations test",
+      "cloud_project_id": "modak-yeedu",
+      "object_storage_manager": {
+        "object_storage_manager_id": "1",
+        "credential_config_id": "1",
+        "object_storage_bucket_name": "modak-yeedu-nabu"
+      },
+      "credentials_conf_id": "1",
+      "machine_config": {
+        "machine_conf_id": "1",
+        "network_tags": [
+          "yeedu",
+          "iap-allow"
+        ],
+        "labels": {
+          "env": "test",
+          "test": "dev",
+          "resource": "yeedu"
+        },
+        "is_spot_instance": false,
+        "enable_public_ip": true,
+        "block_project_ssh_keys": true,
+        "bootstrap_shell_script": null,
+        "boot_disk_image_config": {
+          "boot_disk_image_conf_id": "1",
+          "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts",
+          "cloud_provider": {
+            "name": "gcp"
+          }
+        },
+        "machine_type": {
+          "name": "c2d-highcpu-16",
+          "description": "16 vCPUs Memory - 32 GiB",
+          "has_cuda": false
+        },
+        "machine_network": {
+          "network_conf_id": "1",
+          "network_project_id": "modak-yeedu",
+          "network_name": "modak-yeedu-spark-vpc",
+          "subnet": "custom-subnet-modak-yeedu",
+          "availability_zone": {
+            "name": "us-central1-a",
+            "region": "us-central1",
+            "description": "Council Bluffs, Iowa, North America"
+          }
+        },
+        "machine_volume_config": {
+          "volume_conf_id": "1",
+          "name": "yeedu volume",
+          "encrypted": false,
+          "size": "375",
+          "machine_volume_num": 1,
+          "machine_volume_strip_num": 1,
+          "availability_zone": {
+            "name": "us-central1-a",
+            "region": "us-central1"
+          },
+          "disk_type": {
+            "name": "local-ssd",
+            "has_fixed_size": true,
+            "min_size": 375,
+            "max_size": 375
+          }
+        }
+      },
+      "spark_config": null,
+      "hive_metastore": null,
+      "cloud_provider": {
+        "name": "gcp",
+        "description": "Provider for creating infrastructuture on Google Cloud Platform"
+      },
+      "spark_infra_version": {
+        "spark_version": "2.4.8",
+        "hive_version": "3.2.3",
+        "hadoop_version": "2.10.1",
+        "scala_version": "2.11.10"
+      },
+      "engine_cluster_spark_config": {
+        "max_parallel_spark_job_per_instance": 5,
+        "standalone_workers_number": null
+      },
+      "cluster_type": "YEEDU",
+      "min_instances": 1,
+      "max_instances": 2,
+      "is_cuda": false,
+      "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+      "created_by": {
+        "user_id": "3",
+        "username": "RM0000"
+      },
+      "modified_by": {
+        "user_id": "3",
+        "username": "RM0000"
+      },
+      "last_update_date": "2023-03-17T10:20:21.627Z",
+      "from_date": "2023-03-17T10:20:21.627Z",
+      "to_date": null
+    }
+  ],
+  "result_set": {
+    "current_page": 1,
+    "total_objects": 1,
+    "total_pages": 1,
+    "limit": 2
+  }
 }
 ```
