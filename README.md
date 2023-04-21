@@ -101,3 +101,71 @@ The following are the endpoints available for Volume Configuration
 
 ## Boot Disk Image Config
 A boot disk image for a virtual machine is a disk image file that contains the operating system and other software needed to boot and run the virtual machine. The boot disk image is typically created by installing the operating system and other software on a virtual machine and then creating an image of the virtual machine's hard disk.
+The following are the endpoints available for Boot Disk Image Configuration
+- [create-boot-disk-image-conf](#create-boot-disk-image-conf)
+- [get-boot-disk-image-conf](#get-boot-disk-image-conf)
+- [list-boot-disk-image-confs](#list-boot-disk-image-confs)
+
+
+## Machine Configuration
+
+We need to provide the specifications required for creating a machine. These specifications can be provided from the above resource configs created.
+
+The following are the endpoints available for Machine Configuration
+- [create-machine-conf](#create-machine-conf)
+- [list-machine-confs](#list-machine-confs)
+- [get-machine-conf](#get-machine-conf) 
+- [edit-machine-conf](#edit-machine-conf)
+
+
+## Credentials Configuration
+
+To access a cloud provider's resources, we typically need to provide credentials that authenticate our identity and authorize access to the resources. The specific credentials required may vary depending on the cloud provider, but generally include:
+Username and password, Access keys, Certificates, Multi-factor authentication, OAuth tokens, --etc.
+
+The following are the endpoints available for Credentials Configuration
+- [create-credential-conf](#create-credential-conf)
+- [list-credential-confs](#list-credential-confs)
+- [get-credential-conf](#get-credential-conf)
+- [edit-credential-conf](#edit-credential-conf)
+- [delete-credential-conf](#delete-credential-conf)
+
+
+## Object Storage Manager
+
+An object storage manager for a cloud provider is a tool or service that allows you to manage and manipulate the object storage resources provided by the cloud provider. 
+Object storage is a type of data storage that stores data as objects rather than as files or blocks, and is commonly used for storing large amounts of unstructured data such as media files, backups, and archives.
+
+The following are the endpoints available for Object Storage Manager Configuration
+- [create-object-storage-manager](#create-object-storage-manager)
+- [list-object-storage-managers](#list-object-storage-managers)
+- [get-object-storage-manager](#get-object-storage-manager)
+- [edit-object-storage-manager](#edit-object-storage-manager)
+- [delete-object-storage-manager](#delete-object-storage-manager)
+
+
+## Object Storage Manager Files
+
+An object storage manager for a cloud provider allows you to manage the files stored in an object storage system.
+When you use an object storage manager to manage files in a cloud provider's object storage system, some of the key file-related operations that you can perform include:
+Uploading files, Downloading files, Copying or moving files, Managing file metadata, Configuring access control,  --etc.
+
+The following are the endpoints available for Object Storage Manager Files Configuration
+- [create-object-storage-manager-file](#create-object-storage-manager-file)
+- [list-object-storage-manager-files](#list-object-storage-manager-files)
+- [get-object-storage-manager-file](#get-object-storage-manager-file)
+- [delete-object-storage-manager-file](#delete-object-storage-manager-file)
+
+
+## Hive Metastore Configuration
+
+The Hive metastore is responsible for managing metadata about the tables and partitions used by Hive, such as the schema of the tables, their location, and the format in which data is stored
+
+The following are the endpoints available for Hive Metastore Configuration
+- [create-hive-metastore-conf](#create-hive-metastore-conf)
+- [list-hive-metastore-confs](#list-hive-metastore-confs)
+- [get-hive-metastore-conf](#get-hive-metastore-conf)
+- [edit-hive-metastore-conf](#edit-hive-metastore-conf)
+- [delete-hive-metastore-conf](#delete-hive-metastore-conf)
+
+
