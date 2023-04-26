@@ -923,3 +923,216 @@ GET /api/v1/clusters
   }
 }
 ```
+
+## get
+
+### Overview
+This api is used to list all the cluster instances created
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/cluster         |     GET              |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cluster_id                                      | Allows you to get information about a specific cluster instance by providing its ID.    |
+| cluster_name                                    | Allows you to get information about a specific cluster instance by providing its name.  |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/cluster
+{
+  "cluster_id": 1
+}
+or 
+GET /api/v1/cluster
+{
+  "cluster_name": "yeedu_instance"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "cluster_id": 1,
+  "instance_name": "yeedu_instance",
+  "idle_timeout_ms": 300000,
+  "auto_shutdown": true,
+  "cluster_conf_id": 1,
+  "cluster_status": "RUNNING",
+  "compute_engine_id": 1,
+  "instance_size": 1,
+  "workflow_job_instance_details": {
+    "workflow_job_instance_status": {
+      "workflow_job_instance_id": 1,
+      "workflow_job_id": 1,
+      "status": "DONE",
+      "from_date": "2023-04-06T08:51:48.104107+00:00",
+      "to_date": "infinity"
+    }
+  },
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": 1,
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": 1,
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:51:48.104107+00:00",
+  "from_date": "2023-04-06T08:51:48.104107+00:00",
+  "to_date": "infinity"
+}
+```
+
+## edit
+
+### Overview
+This api is used to modify the configuration of an existing cluster instance.
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/cluster         |     PUT              |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cluster_id                                      | This parameter is used to specify the ID of the cluster instance that you want to edit.     |
+| cluster_name                                    | This parameter is used to specify the name of the cluster instance that you want to edit.  |
+| idle_timeout_ms                                    | This parameter is used to modify the idle timeout of the cluster instance. The idle timeout is the time (in milliseconds) after which an idle instance will be automatically shutdown. By default, this timeout is set to 2 hours (7200000 milliseconds). To change the idle timeout, you can specify a new value (in milliseconds) for this parameter.  |
+| --auto_shutdown                             | This parameter is used to enable or disable the auto-shutdown feature of the cluster instance. When enabled, the instance will be automatically shutdown after the idle timeout expires. To enable auto-shutdown, set this parameter to "true". To disable auto-shutdown, set it to "false".         |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/cluster
+{
+  "cluster_id": 1,
+  "idle_timeout_ms": 600000
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "cluster_id": "1",
+  "instance_name": "yeedu_instance",
+  "idle_timeout_ms": "600000",
+  "auto_shutdown": true,
+  "cluster_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:55:35.694Z",
+  "from_date": "2023-04-06T08:51:48.104Z",
+  "to_date": null
+}
+```
+
+## start
+
+### Overview
+This api is used to start the cluster instance
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/cluster/start   |     POST             |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cluster_id                                      | This parameter is used to specify the ID of the cluster instance that you want to start.     |
+| cluster_name                                    | This parameter is used to specify the name of the cluster instance that you want to start.  |      |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/cluster/start
+{
+  "cluster_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "CosiStart": {
+    "workflow_job_id": 1,
+    "workflow_job_instance_id": 1,
+    "engine_cluster_instance_id": 1
+  }
+}
+```
+
+## stop
+### Overview
+This api is used to start the cluster instance
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/cluster/start   |     POST             |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cluster_id                                      | This parameter is used to specify the ID of the cluster instance that you want to start.     |
+| cluster_name                                    | This parameter is used to specify the name of the cluster instance that you want to start.  |      |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/cluster/start
+{
+  "cluster_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "CosiStart": {
+    "workflow_job_id": 1,
+    "workflow_job_instance_id": 1,
+    "engine_cluster_instance_id": 1
+  }
+}
+```
+
+
+## destroy
