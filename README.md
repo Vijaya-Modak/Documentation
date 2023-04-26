@@ -360,22 +360,24 @@ This command is used to create a cluster configuration with all the required con
 
 | **Parameter**                                      | **Value**                                                    |
 |----------------------------------------------------|--------------------------------------------------------------|
-| name                                               | A unique to be given to identify the cluster config          |
-| description                                        | Provide description to create-conf.                          |
-| cloud_project_id                                   | A short description about for which purpose it is used       |
-| object_storage_manager_id	                         | Provide object_storage_manager_id to create-conf.            |
-| credentials_conf_id                                | id of the osm that is created                                |
-| machine_conf_id	                                   | id of the machine configuration that is created              |
-| spark_config_id                                    | Provide spark_config_id to create-conf.                      |
-| hive_metastore_conf_id	                           |  Provide hive_metastore_conf_id to create-conf.              |
-| cloud_provider_id                                  | Provide cloud_provider_id to create-conf.                    |
-| spark_infra_version_id	                           | Provide spark_infra_version_id to create-conf.               |
-| max_parallel_spark_job_execution_per_instance      | Provide max_parallel_spark_job_execution_per_instance to create-conf. (default: 5)   |
-| standalone_workers_number	                         | Provide standalone_workers_number to create-conf.            |
-| cluster_type [yeedu, standalone, cluster]          | Provide cluster_type to create-conf.                         |
-| min_instances	                                     | Provide min_instances to create-conf.                        |
-| max_instances                                      | Provide max_instances to create-conf.                        |
-| is_cuda	                                           | Provide is_cuda to create-conf.                              |
+| name                                               | This parameter is used to provide a name for the configuration file that will be created. It can be any string that helps to identify the configuration file.          |
+| description                                        | This parameter is used to provide a description for the configuration file. It can be any string that describes the purpose or characteristics of the cluster that will be created using this configuration file.                          |
+| cloud_project_id                                   | This parameter is used to provide the ID of the cloud project where the cluster will be created. It is a unique identifier that is assigned to the cloud project by the cloud provider.       |
+| object_storage_manager_id	                         | This parameter is used to provide the ID of the object storage manager that will be used by the cluster. The object storage manager is responsible for storing and managing the data used by the cluster.            |
+| credentials_conf_id                                | This parameter is used to provide the ID of the credentials configuration file that will be used by the cluster. The credentials configuration file contains the necessary authentication information to access the resources used by the cluster.                               |
+| machine_conf_id	                                   | This parameter is used to provide the ID of the machine configuration file that will be used by the cluster. The machine configuration file contains the specifications for the virtual machines that will be used by the cluster.              |
+| spark_config_id                                    | This parameter is used to provide the ID of the Spark configuration file that will be used by the cluster. The Spark configuration file contains the settings and parameters for the Spark engine that will be used by the cluster. This parameter is optional.                      |
+| hive_metastore_conf_id	                           |  This parameter is used to provide the ID of the Hive metastore configuration file that will be used by the cluster. The Hive metastore configuration file contains the settings and parameters for the Hive metastore that will be used by the cluster. This parameter is optional.              |
+| cloud_provider_id                                  | This parameter is used to provide the ID of the cloud provider where the cluster will be created. It is a unique identifier that is assigned to the cloud provider.                    |
+| spark_infra_version_id	                           | This parameter is used to provide the ID of the Spark infrastructure version that will be used by the cluster. The Spark infrastructure version contains the software packages and dependencies required to run the Spark engine on the cluster.               |
+| max_parallel_spark_job_execution_per_instance      | This parameter is used to provide the maximum number of parallel Spark job executions per instance. The default value is 5. This parameter is optional.   |
+| standalone_workers_number	                         | If the cluster_type is STANDALONE, we need to provide the workers number. This parameter is optional.           |
+| cluster_type           | This parameter is used to provide the type of cluster that will be created. It can be either YEEDU, STANDALONE, or CLUSTER.                         |
+| min_instances	                                     | This parameter is used to provide the minimum number of instances for the cluster. Instances are the virtual machines that are used to run the cluster.                        |
+| max_instances                                      | This parameter is used to provide the maximum number of instances for the cluster.                        |
+| is_cuda	                                           | This parameter is used to indicate whether or not the cluster will have CUDA support. It accepts a value of true or false.                              |
+| --json-output                         |  This parameter is used to specify the format of the JSON output. The default is pretty. This parameter is optional.          |
+| --yaml-output                         | This parameter is used to specify whether or not to output the configuration file in YAML format. The default is false. This parameter is optional.          |
 
 
 ### Sample
@@ -421,7 +423,7 @@ POST /api/v1/cluster/conf
   },
   "cluster_type": "YEEDU",
   "min_instances": 1,
-  "max_instances": 2,
+  "max_instances": 3,
   "is_cuda": false,
   "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
   "created_by_id": "3",
@@ -432,7 +434,9 @@ POST /api/v1/cluster/conf
 }
 ```
 
-### list-confs
+## list-confs
+
+### Overview
 This api is used to list all the cluster configurations created
 
 | Request URL             |  HTTP method         |
@@ -448,7 +452,7 @@ This api is used to list all the cluster configurations created
 |----------------------------------------------------|--------------------------------------------------------------|
 | cloud provider                                     | Cloud Provider that will be used for filter. (Available values : GCP, AWS, AZURE)   |
 | pageNumber                                         | The page number from which items will return. (Default value : 1)  |
-| limit                                              |  The numbers of items to return. (Default value : 100)  |
+| limit                                              |  The number of items to return. (Default value : 100)  |
 
 
 ### Sample
@@ -553,7 +557,7 @@ GET /api/v1/cluster/confs
       },
       "cluster_type": "YEEDU",
       "min_instances": 1,
-      "max_instances": 2,
+      "max_instances": 3,
       "is_cuda": false,
       "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
       "created_by": {
@@ -578,7 +582,9 @@ GET /api/v1/cluster/confs
 }
 ```
 
-### get-conf
+## get-conf
+
+### Overview
 This api is used to get information about specific cluster configuration when cluster_conf_id or cluster_conf_name is provided
 
 | Request URL             |  HTTP method         | 
@@ -699,7 +705,7 @@ GET /api/v1/cluster/conf
   },
   "cluster_type": "YEEDU",
   "min_instances": 1,
-  "max_instances": 2,
+  "max_instances": 3,
   "is_cuda": false,
   "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
   "created_by": {
@@ -713,5 +719,207 @@ GET /api/v1/cluster/conf
   "last_update_date": "2023-03-17T10:20:21.627Z",
   "from_date": "2023-03-17T10:20:21.627Z",
   "to_date": null
+}
+```
+
+
+## edit-conf
+
+### Overview
+This api is used to edit parameters after creating cluster configuration. required '--cluster_conf_id' argument and other optional argument is passed which is to be updated.
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/cluster/conf    |     PUT              |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cluster_conf_id                                    | Cluster Configuration Id that will be used for filter    |
+| name                                               | Cluster Configuration Name that will be used for filter  |
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/cluster/conf
+{
+  "cluster_conf_id": 1,
+  "name": "yeedu_cluster_1"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "cluster_conf_id": "1",
+  "name": "yeedu_cluster_1",
+  "description": "Cluster Configurations test",
+  "cloud_project_id": "modak-yeedu",
+  "object_storage_manager_id": "1",
+  "credentials_conf_id": "1",
+  "machine_conf_id": "1",
+  "spark_config_id": null,
+  "hive_metastore_conf_id": null,
+  "cloud_provider_id": "0",
+  "spark_infra_version_id": "0",
+  "engine_cluster_spark_config": {
+    "max_parallel_spark_job_execution_per_instance": 5,
+    "standalone_workers_number": null
+  },
+  "cluster_type": "YEEDU",
+  "min_instances": 1,
+  "max_instances": 3,
+  "is_cuda": false,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:51:07.484Z",
+  "from_date": "2023-04-06T08:45:29.960Z",
+  "to_date": null
+}
+```
+
+## create
+
+### Overview
+This api is used to create a new cluster instance using a predefined configuration
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/cluster         |     POST             |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| instance_name                                      | optional parameter to specify the name of the cluster instance to be created.    |
+| idle_timeout_ms                                    | optional parameter to specify the time in milliseconds after which the cluster instance should shut down when idle.  |
+| auto_shutdown                                      | optional parameter to specify whether or not the cluster instance should automatically shut down when idle. The default value is true.    |
+| cluster_conf_id                                    | required parameter to specify the configuration ID for the cluster to be created.  |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/cluster
+{
+  "instance_name": "yeedu_instance",
+  "idle_timeout_ms": 300000,
+  "auto_shutdown": "true",
+  "cluster_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "cluster_id": "1",
+  "instance_name": "yeedu_instance",
+  "idle_timeout_ms": "300000",
+  "auto_shutdown": true,
+  "cluster_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:51:48.104Z",
+  "from_date": "2023-04-06T08:51:48.104Z",
+  "to_date": null
+}
+```
+
+## list
+
+### Overview
+This api is used to list all the cluster instances created
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/clusters       |     GET              |
+
+
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cluster_status                                      | Allows you to filter the list of cluster instances by their status. You can provide a comma-separated list of status values to include in the list. The possible values are: "INITIATING", "RUNNING", "STOPPING", "STOPPED", "DESTROYING", "DESTROYED", "ERROR", "RESIZING_UP", and "RESIZING_DOWN".    |
+| cluster_conf_id                                    | Allows you to list all cluster instances that use a specific cluster configuration ID.  |
+| cluster_conf_name                                      | Allows you to list all cluster instances that use a specific cluster configuration name.    |
+| page_number                                    | Allows you to list cluster instances of a specific page number. By default, the page number is set to 1.  |
+| limit                             | Allows you to set the limit of the number of cluster instances to list. By default, the limit is set to 100.          |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/clusters
+{
+  "cluster_status": "RUNNING",
+  "cluster_conf_id": 1,
+  "page_number": 1,
+  "limit": 5
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "data": [
+    {
+      "cluster_id": 1,
+      "instance_name": "yeedu_instance",
+      "idle_timeout_ms": 300000,
+      "auto_shutdown": true,
+      "cluster_conf_id": 1,
+      "cluster_status": "RUNNING",
+      "compute_engine_id": 1,
+      "instance_size": 1,
+      "workflow_job_instance_details": {
+        "workflow_job_instance_status": {
+          "workflow_job_instance_id": 1,
+          "workflow_job_id": 1,
+          "status": "DONE",
+          "from_date": "2023-04-06T08:51:48.104107+00:00",
+          "to_date": "infinity"
+        }
+      },
+      "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+      "created_by": {
+        "user_id": 1,
+        "username": "YSU0000"
+      },
+      "modified_by": {
+        "user_id": 1,
+        "username": "YSU0000"
+      },
+      "last_update_date": "2023-04-06T08:51:48.104107+00:00",
+      "from_date": "2023-04-06T08:51:48.104107+00:00",
+      "to_date": "infinity"
+    }
+  ],
+  "result_set": {
+    "current_page": 1,
+    "total_objects": 1,
+    "total_pages": 1,
+    "limit": 5
+  }
 }
 ```
