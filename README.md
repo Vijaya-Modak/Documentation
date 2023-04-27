@@ -3419,3 +3419,295 @@ DELETE /api/v1/platform/admin/tenant/user/:user_id/role/:role_id
   "message": "Deleted User Roles for the provided tenant_id: 'd9d98a22-5216-4955-b3d9-b0337d8ac0d9', user_id: 2 and role_id: 1."
 }
 ```
+
+## list-tenant-groups
+
+### Overview
+This api is used to list all the groups present in a particular tenant.
+
+| Request URL                                               |  HTTP method         | 
+|---------------------------------------------------------- |----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/groups           |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | Specifies the tenant ID for which the groups are to be listed.            |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/groups
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "groups": [
+    "yeedu-manager"
+  ]
+}
+```
+
+## get-tenant-group
+
+### Overview
+This api is used to retrieve information about a specific group in a given tenant
+
+| Request URL                                                       |  HTTP method         | 
+|-------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/group/:group_id          |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | specifies the ID of the tenant to which the group belongs    |
+| group_id                                      | specifies the ID of the group to retrieve information about  |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/group/:group_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "group_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_id": 1,
+  "group_name": "yeedu-manager",
+  "from_date": "2023-03-15T11:32:17.570658+00:00",
+  "to_date": "infinity"
+}
+```
+
+## get-group-roles
+
+### Overview
+This api is used to retrieve the roles assigned to a specific group in a given tenant
+
+| Request URL                                                        |  HTTP method         | 
+|------------------------------------------------------------------- |----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/group/:group_id           |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | Specifies the ID of the tenant for which the group roles should be retrieved.           |
+| user_id                                       | Specifies the ID of the group for which the roles should be retrieved.  |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/group/:group_id 
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "group_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_id": 1,
+  "roles": [
+    "Resource Manager"
+  ]
+}
+```
+
+## list-groups-roles
+
+### Overview
+This api is used to list all the roles of groups present in a specific tenant.
+
+| Request URL                                                         |  HTTP method         | 
+|---------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/roles/groups               |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | This parameter is used to specify the ID of the tenant for which the group roles should be listed.           |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/roles/groups  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "group_id": 1,
+    "group_name": "yeedu-manager",
+    "roles": [
+      "Resource Manager"
+    ]
+  }
+]
+```
+
+## get-role-groups
+
+### Overview
+This api retrieves the groups associated with a particular role in a specific tenant. 
+
+| Request URL                                                         |  HTTP method         | 
+|---------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/roles/groups/:role_id      |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | The ID of the tenant to which the role belongs.              |
+| role_id                                       | The ID of the role whose associated groups you want to retrieve.       |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/roles/groups/:role_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+  "role_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "role_id": 0,
+  "groups": [
+    "yeedu-manager"
+  ]
+}
+```
+
+## create-group-role
+
+### Overview
+This api is used to create a new role for a group in a specific tenant.
+
+| Request URL                                                         |  HTTP method         | 
+|---------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/group/:group_id/role/:role_id         |     POST             |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | The ID of the tenant to which the group and role belong (optional).   |
+| group_id                                      | The ID of the group for which the new role is being created.          |
+| role_id                                       | The ID of the role being associated with the group.                   |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/platform/admin/tenant/group/:group_id/role/:role_id   
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "group_id": 1,
+  "role_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_roles_id": "1",
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "group_id": "1",
+  "role_id": 0,
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-03-15T13:10:15.840Z",
+  "from_date": "2023-03-15T13:10:15.840Z",
+  "to_date": null
+}
+```
+
+## delete-group-role
+
+### Overview
+This api is used to delete a role from a group.
+
+| Request URL                                                         |  HTTP method         | 
+|---------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/group/:group_id/role/:role_id         |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     |  (optional) The ID of the tenant to which the group belongs.       |
+| groupid                                       | The ID of the group from which the role should be deleted.         |
+| role_id                                       | The ID of the role to be deleted from the group.                   |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/platform/admin/tenant/group/:group_id/role/:role_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "group_id": 1,
+  "role_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted Group Role for the provided Tenant Id: 'd9d98a22-5216-4955-b3d9-b0337d8ac0d9', Group Id: 1, and Role Id: 0"
+}
+```
