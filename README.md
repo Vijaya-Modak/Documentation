@@ -2035,3 +2035,800 @@ GET /api/v1/spark/job/:job_id/log/:log_type
 ```bash
 Pi is roughly 3.141698702833974
 ```
+
+
+## get-workflow-job-instance
+
+### Overview
+This api is used to retrieve information about a specific Workflow Job Instance
+
+| Request URL                                                         |  HTTP method         | 
+|---------------------------------------------------------------------|----------------------|
+| /api/v1/spark/job/workflow_job_instance_details/:job_application_id |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| job_application_id                                 | This is a required parameter that specifies the application_id of the spark job for which you want to retrieve information.  |      
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                        | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/spark/job/workflow_job_instance_details/:job_application_id
+{
+  "job_application_id": "local-1676966563563"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "job_id": 1,
+  "job_application_id": "local-1676966563563",
+  "job_status": "RUNNING",
+  "compute_engine":"1",
+  "cluster_id": "1",
+  "workflow_job_instance_details": {
+    "workflow_job_instance_status": {
+      "workflow_job_instance_id": 4,
+      "workflow_job_id": 4,
+      "status": "DONE",
+      "previous_status": [
+        "NONE",
+        "INIT",
+        "SENT",
+        "RECEIVED",
+        "EXECUTING"
+      ],
+      "from_date": "2023-04-06T09:13:48.376291+00:00",
+      "to_date": "infinity"
+    },
+    "workflow_execution_process": {
+      "machine_pid_number": "66",
+      "machine_hostname": "yeedu1-ceaa31b4-37a0-3c6a-9797-61b11d0614da",
+      "machine_id": "ceaa31b4-37a0-3c6a-9797-61b11d0614da",
+      "machine_pid_user": "root",
+      "machine_node_number": "2"
+    }
+  },
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": 1,
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": 1,
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T09:13:48.376291+00:00",
+  "from_date": "2023-04-06T09:13:48.376291+00:00",
+  "to_date": "infinity"
+}
+```
+
+## get-user-info
+
+### Overview
+This api is used to get information about current session user or the user who is authenticated.
+
+| Request URL             |  HTTP method         | 
+|-------------------------|----------------------|
+| /api/v1/user/info       |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/user/info
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": "1",
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "username": "USER",
+  "email": "user@yeedu.com",
+  "group_info": [
+    {
+      "group_id": 1,
+      "groupname": "yeedu-user"
+    }
+  ],
+  "from_date": "2023-03-14T10:00:47.406Z",
+  "to_date": null
+}
+```
+
+
+## get-user-roles
+
+### Overview
+This api retrieves the roles associated with the currently authenticated user. 
+
+| Request URL                              |  HTTP method         | 
+|------------------------------------------|----------------------|
+| /api/v1/user/info/roles                  |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                        | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/user/info/roles
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": 2,
+  "username": "RU0000",
+  "user_roles": [
+    "Resource User"
+  ],
+  "group_roles": [
+    null
+  ]
+}
+```
+
+## sync-user
+
+### Overview
+This api is used to synchronize user information present in LDAP with the database. 
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/platform/shared/admin/sync/user/:username          |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| username                                      |  This parameter is used to specify the username of the user to be synchronized.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/shared/admin/sync/user/:username 
+{
+  "username": "USER"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": "2",
+  "username": "USER",
+  "email": "user@yeedu.com",
+  "from_date": "2023-03-14T10:03:06.200Z",
+  "to_date": null
+}
+```
+
+## sync-group
+
+### Overview
+This api is used to synchronize group information present in LDAP with the database. 
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/platform/shared/admin/sync/group/:groupname        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| groupname                                     |  This parameter is used to specify the groupname of the group to be synchronized.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/shared/admin/sync/group/:groupname 
+{
+  "groupname": "yeedu-user"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_id": "3",
+  "group_name": "yeedu-user",
+  "from_date": "2023-03-15T14:30:20.723Z",
+  "to_date": null
+}
+```
+
+## list-user-groups
+
+### Overview
+This api retrieves a list of all the groups that a specific user belongs to.
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/platform/shared/admin/user/:user_id/groups         |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| user_id                                       |  parameter to identify the user for which to retrieve the list of groups.                                                            |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/shared/admin/user/:user_id/groups 
+{
+  "user_id": 2
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": 2,
+  "username": "RU0000",
+  "groups": [
+    "yeedu-user"
+  ]
+}
+```
+
+#  list-users
+
+### Overview
+This api retrieves a list of all the users in the system.
+
+| Request URL                                |  HTTP method         | 
+|--------------------------------------------|----------------------|
+| /api/v1/platform/shared/admin/users        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/shared/admin/users 
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "user_id": "1",
+    "username": "YA0000",
+    "email": "ya0000@yeedu.com",
+    "from_date": "2023-03-14T10:03:06.200Z",
+    "to_date": null
+  },
+  {
+    "user_id": "2",
+    "username": "RM0000",
+    "email": "rm0000@yeedu.com",
+    "from_date": "2023-03-14T10:03:11.934Z",
+    "to_date": null
+  }
+]
+```
+
+## list-group-users
+
+### Overview
+This api retrieve a list of all the users who belong to a specific group
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/platform/shared/admin/group/:group_id/users        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| group_id                                      | parameter to identify the group for which to retrieve the list of users present in that group.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/shared/admin/group/:group_id/users 
+{
+  "group_id": 2
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_id": 2,
+  "group_name": "yeedu-provider",
+  "users": [
+    "YSU0000",
+    "RP0000"
+  ]
+}
+```
+
+## list-groups
+
+### Overview
+This api is used to retrieve a list of all the groups present in the system.
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/platform/shared/admin/groups                       |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/shared/admin/groups
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "group_id": "1",
+    "group_name": "yeedu-manager",
+    "from_date": "2023-03-15T14:30:20.723Z",
+    "to_date": null
+  },
+  {
+    "group_id": "2",
+    "group_name": "yeedu-provider",
+    "from_date": "2023-03-15T14:30:20.723Z",
+    "to_date": null
+  },
+  {
+    "group_id": "3",
+    "group_name": "yeedu-user",
+    "from_date": "2023-03-15T14:30:20.723Z",
+    "to_date": null
+  }
+]
+```
+
+## list-resources
+
+### Overview
+This api lists all the resources that are available in the system. A resource is an endpoint or a URL that can be accessed through the API.
+
+| Request URL                             |  HTTP method         | 
+|-----------------------------------------|----------------------|
+| /api/v1/resources                       |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/resources
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "resource_id": 0,
+    "resource_path": "/api/v1/lookup_cloud_providers",
+    "from_date": "2023-03-14T09:57:21.251Z",
+    "to_date": null
+  },
+  {
+    "resource_id": 1,
+    "resource_path": "/api/v1/lookup_disk_machine_type",
+    "from_date": "2023-03-14T09:57:21.251Z",
+    "to_date": null
+  },
+  ...
+  {
+    "resource_id": 96,
+    "resource_path": "/api/v1/permission/:auth_permissions_type_id/resource/:auth_resources_id/rule/:id",
+    "from_date": "2023-03-14T09:57:21.251Z",
+    "to_date": null
+  }
+]
+```
+
+## get-resource
+
+### Overview
+This api is used to get information about a specific resource by providing the `resource_id` parameter.
+
+| Request URL                 |  HTTP method         | 
+|-----------------------------|----------------------|
+| /api/v1/resource/:id        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| resource_id                                   |  This parameter is required and takes the ID of the resource for which you want to retrieve information.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/resource/:id
+{
+  "resource_id": 18
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "resource_id": 18,
+  "resource_path": "/api/v1/providers/:id_cloud_provider/network",
+  "from_date": "2023-03-14T09:57:21.251Z",
+  "to_date": null
+}
+```
+
+## list-permissions
+
+### Overview
+This api lists all the available permissions in the system. It returns a JSON array of objects, where each object contains information about a permission, such as the permission ID, the permission name (e.g. "GET", "POST", "PUT", "DELETE"), a brief description of the permission, and the dates when the permission was added.
+
+| Request URL                |  HTTP method         | 
+|----------------------------|----------------------|
+| /api/v1/permissions        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/permissions
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "permission_id": 0,
+    "permission": "GET",
+    "description": "To list a resource",
+    "from_date": "2023-03-14T09:57:21.249Z",
+    "to_date": null
+  },
+  ...
+  {
+    "permission_id": 3,
+    "permission": "DELETE",
+    "description": "To delete a resource",
+    "from_date": "2023-03-14T09:57:21.249Z",
+    "to_date": null
+  }
+]
+```
+
+## get-permission
+
+### Overview
+This api gives information about a specific permission type.
+
+| Request URL                        |  HTTP method         | 
+|------------------------------------|----------------------|
+| /api/v1/permission/:id             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| permission_id                                 | This parameter is used to provide the ID of the Permission Type you want to retrieve information about. It is a required parameter.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/permission/:id 
+{
+  "permission_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "permission_id": 1,
+  "permission": "POST",
+  "description": "To create a resource",
+  "from_date": "2023-03-14T09:57:21.249Z",
+  "to_date": null
+}
+```
+
+## list-roles
+
+### Overview
+This api lists all the roles in the IAM system along with their IDs, descriptions, and permissions associated with them.
+The different roles present in the system are `Resource Manager`, `Resource Provider`, `Resource User`, `Admin` and `Platform Admin`.
+
+| Request URL                 |  HTTP method         | 
+|-----------------------------|----------------------|
+| /api/v1/roles               |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/roles 
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "role_id": 0,
+    "role": "Resource Manager",
+    "description": "GET (Lookup, Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Object Storage Manager Files, Hive Metastore Config, Cluster Configuration, Cluster Instance, Spark Job Config, Spark Job Instance, User) PUT (Volume Config, Network Config, Machine Config, Credentials Config, Object Storage Manager, Hive Metastore Config, Cluster Configuration) POST (Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Hive Metastore Config, Cluster Configuration) DELETE (Credentials Config, Object Storage Manager)",
+    "from_date": "2023-03-14T09:57:21.252Z",
+    "to_date": null
+  },
+  ...
+  {
+    "role_id": 4,
+    "role": "Platform Admin",
+    "description": "GET/PUT/POST/DELETE (Lookup, Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Object Storage Manager Files, Hive Metastore Config, Cluster Configuration, Cluster Instance, Spark Job Config, Spark Job Instance, User, Admin, Shared Platform and Admin Resources, Platform Admin, IAM Lookup). Responsible to manage tenants and can access any endpoint.",
+    "from_date": "2023-03-14T09:57:21.252Z",
+    "to_date": null
+  }
+]
+```
+
+## get-role
+
+### Overview
+This api is used to retrieve information about a specific role.
+
+| Request URL                     |  HTTP method         | 
+|---------------------------------|----------------------|
+| /api/v1/role/:id                |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| role_id                                       | Provide the role_id of the role you want to get information about.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/role/:id  
+{
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "role_id": 1,
+  "role": "Resource Provider",
+  "description": "GET (Lookup, Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Object Storage Manager Files, Hive Metastore Config, Cluster Configuration, Cluster Instance, Spark Job Config, Spark Job Instance, User) POST/PUT (Cluster Instance)",
+  "from_date": "2023-03-14T09:57:21.252Z",
+  "to_date": null
+}
+```
+
+## list-rules
+
+### Overview
+This api is used to list all the access control rules defined in the system. Access control rules are used to determine which users or roles can perform certain actions on specific resources.
+
+| Request URL                   |  HTTP method         | 
+|-------------------------------|----------------------|
+| /api/v1/rules                 |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/rules 
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "rule_id": "0",
+    "permission_type": {
+      "permission_id": 0,
+      "permission": "GET",
+      "description": "To list a resource"
+    },
+    "resource": {
+      "resource_id": 0,
+      "resource_path": "/api/v1/lookup_cloud_providers"
+    },
+    "role": {
+      "role_id": 0,
+      "role": "Resource Manager",
+      "description": "GET (Lookup, Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Object Storage Manager Files, Hive Metastore Config, Cluster Configuration, Cluster Instance, Spark Job Config, Spark Job Instance, User) PUT (Volume Config, Network Config, Machine Config, Credentials Config, Object Storage Manager, Hive Metastore Config, Cluster Configuration) POST (Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Hive Metastore Config, Cluster Configuration) DELETE (Credentials Config, Object Storage Manager)"
+    },
+    "from_date": "2023-03-30T10:34:32.540Z",
+    "to_date": null
+  },
+  ...
+  {
+    "rule_id": "375",
+    "permission_type": {
+      "permission_id": 0,
+      "permission": "GET",
+      "description": "To list a resource"
+    },
+    "resource": {
+      "resource_id": 98,
+      "resource_path": "/api/v1/permission/:auth_permissions_type_id/resource/:auth_resources_id/rule/:id"
+    },
+    "role": {
+      "role_id": 4,
+      "role": "Platform Admin",
+      "description": "GET/PUT/POST/DELETE (Lookup, Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Object Storage Manager Files, Hive Metastore Config, Cluster Configuration, Cluster Instance, Spark Job Config, Spark Job Instance, User, Admin, Shared Platform and Admin Resources, Platform Admin, IAM Lookup). Responsible to manage tenants and can access any endpoint."
+    },
+    "from_date": "2023-03-30T10:34:32.540Z",
+    "to_date": null
+  }
+]
+```
+
+## get-rule
+
+### Overview
+This api is used to retrieve information about a specific IAM rule.
+
+| Request URL                     |  HTTP method         | 
+|---------------------------------|----------------------|
+| /api/v1/rule/:id                |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| rule_id                                       | This option is required and specifies the ID of the rule that you want to retrieve information about.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/rule/:id  
+{
+  "rule_id": 108
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "rule_id": "108",
+  "permission_type": {
+    "permission_id": 0,
+    "permission": "GET",
+    "description": "To list a resource"
+  },
+  "resource": {
+    "resource_id": 45,
+    "resource_path": "/api/v1/spark/job/:job_id"
+  },
+  "role": {
+    "role_id": 1,
+    "role": "Resource Provider",
+    "description": "GET (Lookup, Volume Config, Network Config, Boot Disk Image Config, Machine Config, Credentials Config, Object Storage Manager, Object Storage Manager Files, Hive Metastore Config, Cluster Configuration, Cluster Instance, Spark Job Config, Spark Job Instance, User) POST/PUT (Cluster Instance)"
+  },
+  "from_date": "2023-03-30T10:34:32.540Z",
+  "to_date": null
+}
+```
