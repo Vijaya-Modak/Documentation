@@ -2832,3 +2832,590 @@ GET /api/v1/rule/:id
   "to_date": null
 }
 ```
+
+## create-tenant
+
+### Overview
+This api is used to create a new tenant. A tenant is a logical entity in the Yeedu system that represents an organization.
+
+| Request URL                                 |  HTTP method         | 
+|---------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant               |     POST             |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| name                                          | The name of the tenant that you want to create. This option is required.                  |
+| description                                   | An optional description of the tenant.                     |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/platform/admin/tenant  
+{
+  "name": "tenant1",
+  "description": "Yeedu Tenant-1"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "name": "tenant1",
+  "description": "Yeedu Tenant-1",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-03-13T12:29:25.982Z",
+  "from_date": "2023-03-13T12:29:25.982Z",
+  "to_date": null
+}
+```
+
+## list-tenants
+
+### Overview
+This api is used to list all the existing tenants in the system. It returns a JSON array containing information about each tenant, including their `tenant_id`, `name`, and `description` (if provided).
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenants                |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenants  
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+    "name": "tenant1",
+    "description": "Yeedu Tenant-1",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-03-13T12:29:25.982Z",
+    "from_date": "2023-03-13T12:29:25.982Z",
+    "to_date": null
+  }
+]
+```
+
+
+## get-tenant
+
+### Overview
+This api retrieves information about a specific tenant when the required parameter `tenant_id` is provided.
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id                |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | This option specifies the ID of the tenant to retrieve information about. It is a required option.                 |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "name": "tenant1",
+  "description": "Yeedu Tenant-1",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-03-13T12:29:25.982Z",
+  "from_date": "2023-03-13T12:29:25.982Z",
+  "to_date": null
+}
+```
+
+## edit-tenant
+
+### Overview
+This api allows you to edit the name and/or description of an existing tenant.
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id                |     PUT              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | This option is required and expects the ID of the tenant you want to edit.                                          |
+| name                                          | This option is optional and allows you to set a new name for the tenant.                                          |
+| description                                   | This option is optional and allows you to set a new description for the tenant.                                          |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/platform/admin/tenant/:tenant_id 
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "description": "Yeedu Tenant"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "name": "tenant1",
+  "description": "Yeedu Tenant",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-03-13T12:38:46.075Z",
+  "from_date": "2023-03-13T12:29:25.982Z",
+  "to_date": null
+}
+```
+
+## delete-tenant
+
+### Overview
+This api is used to delete a specific tenant with the given `tenant_id` parameter.
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id                |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | Provide the id of the tenant you want to delete        |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/platform/admin/tenant/:tenant_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted Tenant: d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+## list-user-tenants
+
+### Overview
+This api is used to list all the tenants associated with a specific user. 
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/user/:user_id/tenants            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| user_id                                       | This option is used to provide the user ID for which you want to list all the associated tenants.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/user/:user_id/tenants
+{
+  "user_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+    "name": "tenant1",
+    "description": "Yeedu Tenant 1"
+  },
+  {
+    "tenant_id": "066a702d-6b9d-4176-afc5-51c24a651739",
+    "name": "tenant2",
+    "description": "Yeedu Tenant 2"
+  },
+  {
+    "tenant_id": "328aba9a-92ac-458d-8c27-fe9ea6e5e9ab",
+    "name": "tenant3",
+    "description": "Yeedu Tenant 3"
+  }
+]
+```
+
+## list-tenant-users
+
+### Overview
+This api is used to retrieve a list of all users that are present in a specific tenant.
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/users          |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | Provide the role_id of the role you want to get information about.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/users  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "users": [
+    "RM0000",
+    "RP0000",
+    "YA0000",
+    "YSU0000"
+  ]
+}
+```
+
+## get-tenant-user
+
+### Overview
+This api is used to retrieve information about a specific user in a given tenant when the required parameters `tenant_id` and `user_id` are passed.
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/user/:user_id  |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | This parameter is used to specify the ID of the tenant to which the user belongs. It is a required parameter.                                          |
+| user_id                                       | This parameter is used to specify the ID of the user whose information you want to retrieve. It is a required parameter.                                          |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/user/:user_id 
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "user_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": 1,
+  "username": "USER",
+  "email": "user@yeedu.com",
+  "from_date": "2023-03-14T10:00:47.406628+00:00",
+  "to_date": "infinity"
+}
+```
+
+## get-user-roles
+
+### Overview
+This api retrieves the roles assigned to a specific user in a given tenant.
+
+| Request URL                                                        |  HTTP method         | 
+|--------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/user/:user_id/roles       |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | Specifies the ID of the tenant for which the user roles should be retrieved.                                                            |
+| user_id                                       | Specifies the ID of the user for which the roles should be retrieved.                                                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/user/:user_id/roles 
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "user_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": 1,
+  "username": "RM0000",
+  "user_roles": [
+    "Resource Manager"
+  ],
+  "group_roles": [
+    null
+  ]
+}
+```
+
+## list-users-roles
+
+### Overview
+This api is used to list all the roles of the users present in a specific tenant.
+
+| Request URL                                             |  HTTP method         | 
+|---------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/roles/users    |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | Specifies the ID of the tenant for which the user roles are to be listed.                                         |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/roles/users 
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "user_id": 1,
+    "username": "RM0000",
+    "user_roles": [
+      "Resource Manager"
+    ],
+    "group_roles": [
+      null
+    ]
+  },
+  {
+    "user_id": 2,
+    "username": "RP0000",
+    "user_roles": [
+      "Resource Provider"
+    ],
+    "group_roles": [
+      null
+    ]
+  }
+]
+```
+
+## get-role-users
+
+### Overview
+This api is used to retrieve the list of users who belong to a specific role within a given tenant. 
+
+| Request URL                                                             |  HTTP method         | 
+|-------------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/:tenant_id/roles/users/:role_id           |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     |  This parameter is used to specify the ID of the tenant for which you want to retrieve the list of users with the specified role.                            |
+| role_id                                       |  This parameter is used to specify the ID of the role for which you want to retrieve the list of users.                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/platform/admin/tenant/:tenant_id/roles/users/:role_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "role_id": 1,
+  "users": [
+    "RP0000"
+  ]
+}
+```
+
+## create-user-role
+
+### Overview
+This api is used to create a new role for a user in a specific tenant.
+
+| Request URL                                                              |  HTTP method         | 
+|--------------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/user/:user_id/role/:role_id                |     POST             |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | (optional) The ID of the tenant in which the user is being assigned a new role.                                                             |
+| user_id                                       | The ID of the user for whom the new role is being created.                                                            |
+| role_id                                       | The ID of the role that is being assigned to the user.                                                          |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/platform/admin/tenant/user/:user_id/role/:role_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "user_id": 2,
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_roles_id": "2",
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "user_id": "2",
+  "role_id": 1,
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-03-15T12:50:27.826Z",
+  "from_date": "2023-03-15T12:50:27.826Z",
+  "to_date": null
+}
+```
+
+## delete-user-role
+
+### Overview
+This api is used to delete a specific tenant with the given `tenant_id` parameter.
+
+| Request URL                                                         |  HTTP method         | 
+|---------------------------------------------------------------------|----------------------|
+| /api/v1/platform/admin/tenant/user/:user_id/role/:role_id           |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| tenant_id                                     | The ID of the tenant the user and role belong to.            |
+| user_id                                       | The ID of the user to delete the role from.                  |
+| role_id                                       | The ID of the role to delete from the user.                  |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/platform/admin/tenant/user/:user_id/role/:role_id  
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "user_id": 2,
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted User Roles for the provided tenant_id: 'd9d98a22-5216-4955-b3d9-b0337d8ac0d9', user_id: 2 and role_id: 1."
+}
+```
