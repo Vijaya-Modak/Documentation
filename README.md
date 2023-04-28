@@ -3687,7 +3687,7 @@ This api is used to delete a role from a group.
 | **Parameter**                                 | **Value**                                                    |
 |-----------------------------------------------|--------------------------------------------------------------|
 | tenant_id                                     |  (optional) The ID of the tenant to which the group belongs.       |
-| groupid                                       | The ID of the group from which the role should be deleted.         |
+| group_id                                      | The ID of the group from which the role should be deleted.         |
 | role_id                                       | The ID of the role to be deleted from the group.                   |
 | json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
 | yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
@@ -3709,5 +3709,573 @@ DELETE /api/v1/platform/admin/tenant/group/:group_id/role/:role_id
 ```bash
 {
   "message": "Deleted Group Role for the provided Tenant Id: 'd9d98a22-5216-4955-b3d9-b0337d8ac0d9', Group Id: 1, and Role Id: 0"
+}
+```
+
+
+## list-users
+
+### Overview
+This api lists all the users in the system when authenticated with Admin role.
+
+| Request URL                    |  HTTP method         | 
+|--------------------------------|----------------------|
+| /api/v1/admin/users            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/users
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "users": [
+    "RM0000",
+    "RP0000",
+    "YA0000",
+    "YSU0000"
+  ]
+}
+```
+
+## get-user
+
+### Overview
+This api is used to retrieve information about a specific user.
+
+| Request URL                                |  HTTP method         | 
+|--------------------------------------------|----------------------|
+| /api/v1/admin/user/:user_id                |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| user_id                                       | This parameter is required and should be followed by the ID of the user you want to retrieve information about.     |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/user/:user_id   
+{
+  "user_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": 1,
+  "username": "USER",
+  "email": "user@yeedu.com",
+  "from_date": "2023-03-14T10:00:47.406628+00:00",
+  "to_date": "infinity"
+}
+```
+
+## get-user-roles
+
+### Overview
+This api is used to get the roles assigned to a specific user.
+
+| Request URL                                    |  HTTP method         | 
+|------------------------------------------------|----------------------|
+| /api/v1/admin/user/:user_id/roles              |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| user_id                                       | This is a required parameter that specifies the ID of the user whose roles are to be retrieved.    |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/user/:user_id/roles 
+{
+  "user_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_id": 1,
+  "username": "RM0000",
+  "user_roles": [
+    "Resource Manager"
+  ],
+  "group_roles": [
+    null
+  ]
+}
+```
+
+## list-users-roles
+
+### Overview
+This api retrieves a list of all users along with their assigned roles.
+
+| Request URL                           |  HTTP method         | 
+|---------------------------------------|----------------------|
+| /api/v1/admin/roles/users             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/roles/users  
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "user_id": 1,
+    "username": "RM0000",
+    "user_roles": [
+      "Resource Manager"
+    ],
+    "group_roles": [
+      null
+    ]
+  },
+  {
+    "user_id": 2,
+    "username": "RP0000",
+    "user_roles": [
+      "Resource Provider"
+    ],
+    "group_roles": [
+      null
+    ]
+  }
+]
+```
+
+## get-role-users
+
+### Overview
+This api is used to retrieve the list of users who are assigned to a specific role
+
+| Request URL                                      |  HTTP method         | 
+|--------------------------------------------------|----------------------|
+| /api/v1/admin/roles/users/:role_id               |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| role_id                                       | Specifies the role ID for which the user list is to be retrieved.    |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/roles/users/:role_id 
+{
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "role_id": 1,
+  "users": [
+    "RP0000"
+  ]
+}
+```
+
+## create-user-role
+
+### Overview
+This api is used to create a role for a specific user in the Yeedu platform.
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/admin/user/:user_id/role/:role_id                  |     POST             |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| user_id                                       | This parameter is used to specify the user for whom the role is being created. You need to provide the ID of the user as a value for this parameter.         |
+| role_id                                       | This parameter is used to specify the role that is being assigned to the user. You need to provide the ID of the role as a value for this parameter.            |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/admin/user/:user_id/role/:role_id   
+{
+  "user_id": 2,
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "user_roles_id": "2",
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "user_id": "2",
+  "role_id": 1,
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-03-15T12:50:27.826Z",
+  "from_date": "2023-03-15T12:50:27.826Z",
+  "to_date": null
+}
+```
+
+## delete-user-role
+
+### Overview
+This api is used to delete a role associated with a user.
+
+| Request URL                                                 |  HTTP method         | 
+|-------------------------------------------------------------|----------------------|
+| /api/v1/admin/group/:group_id/role/:role_id                 |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| user_id                                       | The ID of the user whose role is to be deleted.              |
+| role_id                                       | The ID of the role to be deleted.                             |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/admin/group/:group_id/role/:role_id  
+{
+  "user_id": 2,
+  "role_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted User Roles for the provided User Id: 2 and Role Id: 1."
+}
+```
+
+## list-groups
+
+### Overview
+This api is used to list all the groups in the system. 
+
+| Request URL                            |  HTTP method         | 
+|----------------------------------------|----------------------|
+| /api/v1/admin/groups                   |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/groups 
+```
+
+#### HTTP Response
+```bash
+{
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "groups": [
+    "yeedu-manager"
+  ]
+}
+```
+
+## get-group
+
+### Overview
+This api is used to get information about a specific group.
+
+| Request URL                                    |  HTTP method         | 
+|------------------------------------------------|----------------------|
+| /api/v1/admin/groups/:group_id                 |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| group_id                                      | This parameter is required and specifies the ID of the group for which you want to retrieve information.         |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/groups/:group_id  
+{
+  "group_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_id": 1,
+  "group_name": "yeedu-manager",
+  "from_date": "2023-03-15T11:32:17.570658+00:00",
+  "to_date": "infinity"
+}
+```
+
+## get-group-roles
+
+### Overview
+This api is used to retrieve the roles associated with a specific group.
+
+| Request URL                                           |  HTTP method         | 
+|-------------------------------------------------------|----------------------|
+| /api/v1/admin/groups/:group_id/roles                  |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| group_id                                      | This parameter is used to specify the ID of the group whose roles you want to retrieve.         |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/groups/:group_id/roles  
+{
+  "group_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_id": 1,
+  "roles": [
+    "Resource Manager"
+  ]
+}
+```
+
+## list-groups-roles
+
+### Overview
+This api lists all the roles assigned to the groups.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/admin/roles/groups                    |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/roles/groups  
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "group_id": 1,
+    "group_name": "yeedu-manager",
+    "roles": [
+      "Resource Manager"
+    ]
+  }
+]
+```
+
+## get-role-groups
+
+### Overview
+This api is used to get a list of groups that are associated with a specific role. 
+
+| Request URL                                         |  HTTP method         | 
+|-----------------------------------------------------|----------------------|
+| /api/v1/admin/roles/groups/:role_id                 |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| role_id                                       | Specifies the ID of the role to get the groups for.          |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/admin/roles/groups/:role_id   
+{
+  "role_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "role_id": 0,
+  "groups": [
+    "yeedu-manager"
+  ]
+}
+```
+
+## create-group-role
+
+### Overview
+This api is used to create a new association between a group and a role. It is used to grant permissions to a group of users that are associated with a specific role
+
+| Request URL                                                    |  HTTP method         | 
+|----------------------------------------------------------------|----------------------|
+| /api/v1/admin/group/:group_id/role/:role_id                    |     POST             |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| group_id                                      | This parameter is used to specify the ID of the group for which the new role association is being created.         |
+| role_id                                       | This parameter is used to specify the ID of the role to be associated with the group.              |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/admin/group/:group_id/role/:role_id  
+{
+  "group_id": 1,
+  "role_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "group_roles_id": "1",
+  "tenant_id": "d9d98a22-5216-4955-b3d9-b0337d8ac0d9",
+  "group_id": "1",
+  "role_id": 0,
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-03-15T13:10:15.840Z",
+  "from_date": "2023-03-15T13:10:15.840Z",
+  "to_date": null
+}
+```
+
+## delete-group-role
+
+### Overview
+This api is used to delete a specific role from a group.
+
+| Request URL                                            |  HTTP method         | 
+|--------------------------------------------------------|----------------------|
+| /api/v1/admin/group/:group_id/role/:role_id            |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| group_id                                      | This parameter is used to specify the ID of the group from which the role should be deleted.         |
+| role_id                                       | This parameter is used to specify the ID of the role that should be deleted from the group.                  |
+| json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
+| yaml-output                                   | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/admin/group/:group_id/role/:role_id 
+{
+  "group_id": 1,
+  "role_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted Group Role for the provided Group Id: 1 and Role Id: 0"
 }
 ```
