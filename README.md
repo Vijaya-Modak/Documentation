@@ -12,7 +12,7 @@ The three major cloud providers that `yeedu` support are:
 
 The RESTful-API provides the following services
 - [Resource](#resource)
-  -The RESTful API includes the following resources to be created
+The RESTful API includes the following resources to be created
   - [Lookup](#lookup)
   - [Volume Configuration](#volume-configuration)
   - [Network Configuration](#network-configuration)
@@ -49,7 +49,8 @@ This services provides endpoints available for Admin role
 
 # Resource
 
-### Lookup
+### **Lookup**
+</br>
 
 We have lookup tables stored in our database, and we expose them to other applications through REST API endpoints.
 
@@ -58,7 +59,7 @@ Using lookup tables in this way can help to speed up data processing and reduce 
 The following are the endpoints available for lookup tables
 - [list-providers](#list-providers) 
 - [get-provider](#get-provider)
-- [list-provider-availability-zones](#list-provider-availability-zones)
+- [lookup_machine_available_zones](#lookup_machine_available_zones)
 - [get-provider-availability-zone](#get-provider-availability-zone)
 - [list-provider-machine-types](#list-provider-machine-types)
 - [get-provider-machine-type](#get-provider-machine-type)
@@ -71,8 +72,9 @@ The following are the endpoints available for lookup tables
 - [list-workflow-execution-states](#list-workflow-execution-states)
 - [list-workflow-types](#list-workflow-types)
 
+</br>
 
-### Volume Configuration
+### **Volume Configuration**
 
 Volume usually refers to a virtual disk that is attached to the virtual machine.
 
@@ -286,7 +288,7 @@ A tenant is like a team in an organization. These tenants can only be managed by
 The following are the endpoints available for a Platform-Admin at Tenant level
 - [create-tenant](#create-tenant)
 - [list-tenants](#list-tenants-1)
-- [get-tenant](#get-tenant
+- [get-tenant](#get-tenant)
 - [edit-tenant](#edit-tenant)
 - [delete-tenant](#delete-tenant)
 
@@ -344,6 +346,256 @@ The following are the endpoints available for an Admin at Group level
 - [delete-group-role](#delete-group-role-1)
 
 
+## **create-volume-conf**
+
+### **Overview**
+
+Create Volume Conf
+
+| Request URL                       |  HTTP method         |
+|:----------------------------------|:--------------------:|
+| /api/v1/machine/volume            |     POST             |
+
+### **Parameters**
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| name                                               | The name given to this particular volume. |
+| availability_zone_id                               | The availability zone identifier for the zone where this volume is located. |
+| encrypted                                          | Whether the volume is encrypted or not.  |
+| size                                               | The size of the volume in gigabytes. |
+| disk_type_id                                       | The type of disk used for the volume. |
+| machine_volume_num                                 | The number of the machine to which this volume is attached. |
+| machine_volume_strip_num                           | The strip number of the volume within the attached machine. |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+</br>
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/machine/volume
+{
+  "name": "yeedu volume",
+  "availability_zone_id": "75",
+  "encrypted": "false",
+  "size" : 10,
+  "disk_type" : "4",
+  "machine_volume_num" : 1,
+  "machine_volume_strip_num", 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "volume_conf_id": "1",
+  "name": "yeedu volume",
+  "availability_zone_id": "75",
+  "encrypted": false,
+  "size": "375",
+  "disk_type_id": "4",
+  "disk_type_name": "local-ssd",
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:15:42.182Z",
+  "from_date": "2023-04-06T08:15:42.182Z",
+  "to_date": null
+}
+```
+
+
+## **list-volume-confs**
+### **Overview** 
+
+List Volume Conf
+
+| Request URL                       |  HTTP method         |
+|:----------------------------------|:--------------------:|
+| /api/v1/machine/volume            |     GET              |
+
+### **Parameters**
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| cloud provider                                     | Cloud Provider that will be used for filter. (Available values : GCP, AWS, AZURE)   |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/volume
+{
+  "cloud_provider": 0
+}
+```
+
+#### HTTP Response
+
+```bash
+[
+  {
+    "volume_conf_id": "1",
+    "name": "yeedu volume",
+    "availability_zone": {
+      "name": "us-central1-a",
+      "region": "us-central1",
+      "description": "Council Bluffs, Iowa, North America"
+    },
+    "encrypted": false,
+    "size": "375",
+    "disk_type": {
+      "name": "local-ssd",
+      "has_fixed_size": true,
+      "min_size": 375,
+      "max_size": 375
+    },
+    "machine_volume_num": 1,
+    "machine_volume_strip_num": 1,
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:15:42.182Z",
+    "from_date": "2023-04-06T08:15:42.182Z",
+    "to_date": null
+  }
+]
+```
+
+## **get-volume-conf**
+
+### **Overview**
+
+GET Volume Conf
+
+| Request URL                               |  HTTP method         |
+|:------------------------------------------|:--------------------:|
+| /api/v1/machine/volume/:volume_conf_id    |     GET              |
+
+### **Parameters**
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| volume_conf_id                                     | A unique identifier or configuration parameter associated with the volume.  |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/volume/:volume_conf_id
+{
+  "volume_conf_id": 1
+}
+```
+
+#### HTTP Response
+
+```bash
+[
+  {
+    "volume_conf_id": "1",
+    "name": "yeedu volume",
+    "availability_zone": {
+      "name": "us-central1-a",
+      "region": "us-central1",
+      "description": "Council Bluffs, Iowa, North America"
+    },
+    "encrypted": false,
+    "size": "375",
+    "disk_type": {
+      "name": "local-ssd",
+      "has_fixed_size": true,
+      "min_size": 375,
+      "max_size": 375
+    },
+    "machine_volume_num": 1,
+    "machine_volume_strip_num": 1,
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:15:42.182Z",
+    "from_date": "2023-04-06T08:15:42.182Z",
+    "to_date": null
+  }
+]
+```
+
+
+## **edit-volume-conf**
+
+### **Overview** 
+
+Edit Volume Conf
+
+| Request URL                               |  HTTP method         |
+|:------------------------------------------|:--------------------:|
+| /api/v1/machine/volume/:volume_conf_id    |     PUT              |
+
+### **Parameters**
+
+| **Parameter**                                      | **Value**                                                    |
+|----------------------------------------------------|--------------------------------------------------------------|
+| volume_conf_id                                     | A unique identifier or configuration parameter associated with the volume.   |
+| json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
+| yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/machine/volume/:volume_conf_id
+{
+  "volume_conf_id": 1,
+  "name": "yeedu volume",
+  "encrypted": true,
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+
+}
+```
+
+#### HTTP Response
+
+```bash
+{
+  "volume_conf_id": "1",
+  "name": "yeedu volume",
+  "availability_zone_id": "75",
+  "encrypted": true,
+  "size": "375",
+  "disk_type_id": "4",
+  "disk_type_name": "local-ssd",
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:18:06.238Z",
+  "from_date": "2023-04-06T08:15:42.182Z",
+  "to_date": null
+}
+```
+
 ## create-conf
 
 ### Overview
@@ -364,7 +616,7 @@ This command is used to create a cluster configuration with all the required con
 | description                                        | This parameter is used to provide a description for the configuration. It can be any string that describes the purpose or characteristics of the cluster that will be created using this configuration.                          |
 | cloud_project_id                                   | This parameter is used to provide the ID of the cloud project where the cluster will be created. It is a unique identifier that is assigned to the cloud project by the cloud provider.       |
 | object_storage_manager_id	                         | This parameter is used to provide the ID of the object storage manager that will be used by the cluster. The object storage manager is responsible for storing and managing the data used by the cluster. We get this ID from object storage manager configuration.            |
-| credentials_conf_id                                | This parameter is used to provide the ID of the credentials configuration that will be used by the cluster. The credentials configuration contains the necessary authentication infor.                               |
+| credentials_conf_id                                | This parameter is used to provide the ID of the credentials configuration that will be used by the cluster. The credentials configuration contains the necessary authentication information.                               |
 | machine_conf_id	                                   | This parameter is used to provide the ID of the machine configuration that will be used by the cluster. The machine configuration file contains the specifications for the virtual machines that will be used by the cluster.              |
 | spark_config_id                                    | This parameter is used to provide the ID of the Spark configuration that will be used by the cluster. The Spark configuration file contains the settings and parameters for the Spark engine that will be used by the cluster. This parameter is optional.                      |
 | hive_metastore_conf_id	                           |  This parameter is used to provide the ID of the Hive metastore configuration that will be used by the cluster. The Hive metastore configuration file contains the settings and parameters for the Hive metastore that will be used by the cluster. This parameter is optional.              |
