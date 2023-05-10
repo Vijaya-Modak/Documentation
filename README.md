@@ -344,6 +344,790 @@ The following are the endpoints available for an Admin at Group level
 - [delete-group-role](#delete-group-role-1)
 
 
+
+## list-providers
+
+### Overview
+This api is used to get information about available cloud providers 
+
+| Request URL                               |  HTTP method         | 
+|-------------------------------------------|----------------------|
+| /api/v1/lookup_cloud_providers            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| cloud_provider_id                             | This parameter represents the ID of the cloud provider. It is a unique identifier for each provider.         |
+| name                                          | This parameter represents the name of the cloud provider. It is a string value and specifies the name of the provider.                  |
+| description                                   | This parameter represents the description of the cloud provider. It is also a string value and provides a brief description of the provider.  |      
+| from_date                                     | This parameter represents the date and time from which the provider is available for creating infrastructure.   |
+| to_date                                       | This parameter represents the date and time until which the provider is available for creating infrastructure. If this parameter has a value of null, it means that the provider is currently available and there is no end date specified.   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_cloud_providers
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "cloud_provider_id": "0",
+    "name": "gcp",
+    "description": "Provider for creating infrastructuture on Google Cloud Platform",
+    "from_date": "2023-03-14T09:57:21.260Z",
+    "to_date": null
+  },
+  {
+    "cloud_provider_id": "1",
+    "name": "aws",
+    "description": "Provider for creating infrastructuture on Amazon Web Services",
+    "from_date": "2023-03-14T09:57:21.260Z",
+    "to_date": null
+  },
+  {
+    "cloud_provider_id": "2",
+    "name": "azure",
+    "description": "Provider for creating infrastructure on Azure Cloud Platform",
+    "from_date": "2023-03-14T09:57:21.260Z",
+    "to_date": null
+  }
+]
+```
+
+## get-provider
+
+### Overview
+This api is used to get information about a specific cloud provider.
+
+| Request URL                                                  |  HTTP method         | 
+|--------------------------------------------------------------|----------------------|
+| /api/v1/lookup_cloud_providers/:cloud_provider_id            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| cloud_provider_id                             | This option is used to specify the ID of the cloud provider that details are being requested for.         |    
+| json-output                                   | This is an optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format.   |
+| yaml-output                                   | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.   |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_cloud_providers/:cloud_provider_id
+{
+  "cloud_provider_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "cloud_provider_id": "0",
+  "name": "gcp",
+  "description": "Provider for creating infrastructuture on Google Cloud Platform",
+  "from_date": "2023-03-14T09:57:21.260Z",
+  "to_date": null
+}
+```
+
+## list-provider-availability-zones
+
+### Overview
+This api is used to list the availability zones for a specific cloud provider when cloud provider id is provided.
+
+| Request URL                                                                     |  HTTP method         | 
+|---------------------------------------------------------------------------------|----------------------|
+| /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/available/zones       |     GET              |
+
+
+### Parameters
+
+| **Parameter**                                 | **Value**                                                    |
+|-----------------------------------------------|--------------------------------------------------------------|
+| availability_zone_id                          | This id is a unique identifier for the availability zone.    |    
+| cloud_provider                                | An object representing the cloud provider that the availability zone belongs to. The object has two fields: `name` and `description`.  |
+| name                                          | The name of the availability zone.                           |
+| region                                        | The name of the region that the availability zone belongs to.|
+| description                                   | A brief description of the availability zone.                |
+| from_date                                     | The date and time from which the availability zone is available. |
+| to_date                                       | This parameter represents the date and time until which the availability zone is available. If this parameter has a value of null, it means that the availability zone is currently available and there is no end date specified.         |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/available/zones
+{
+  "cloud_provider_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "availability_zone_id": "0",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "name": "asia-east1-a",
+    "region": "asia-east1",
+    "description": "Changhua County, Taiwan, APAC",
+    "from_date": "2023-03-14T09:57:21.281Z",
+    "to_date": null
+  },
+  ...
+  {
+    "availability_zone_id": "102",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "name": "us-south1-c",
+    "region": "us-south1",
+    "description": "Dallas, Texas, North America",
+    "from_date": "2023-03-14T09:57:21.281Z",
+    "to_date": null
+  }
+]
+```
+
+## get-provider-availability-zone
+
+### Overview
+This api is used to get information about specific availability zones for a specific cloud provider when cloud provider id and availability zone id are provided.
+
+| Request URL                                                                     |  HTTP method         | 
+|---------------------------------------------------------------------------------|----------------------|
+| /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/available/zones/:availability_zone_id       |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider_id                        | Specifies the cloud provider ID for which you want to retrieve information about an availability zone.    |    
+| availability_zone_id                     | Specifies the ID of the availability zone for which you want to retrieve information.  |
+| json-output                              | Specifies the format of the output to be JSON. The `pretty` option formats the JSON output in a human-readable format, while the `default` option provides compact JSON output. By default, the `pretty` option is used.                           |
+| yaml-output                              | Specifies the format of the output to be YAML. If `true` is specified, the output will be in YAML format, otherwise it will be in JSON format. By default, the output format is set to JSON.    |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/available/zones/:availability_zone_id
+{
+  "cloud_provider_id": 1,
+  "availability_zone_id": 116
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "availability_zone_id": "116",
+  "cloud_provider": {
+    "name": "aws",
+    "description": "Provider for creating infrastructuture on Amazon Web Services"
+  },
+  "name": "Canada",
+  "region": "ca-central-1",
+  "description": "central",
+  "from_date": "2023-03-29T12:18:41.950Z",
+  "to_date": null
+}
+```
+
+## list-provider-machine-types
+
+### Overview
+This api lists the machine types available for a specific cloud provider when cloud provider id is provided.
+
+| Request URL                                                               |  HTTP method         | 
+|---------------------------------------------------------------------------|----------------------|
+| /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/types           |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| machine_type_id                          | A unique identifier for the machine type within the cloud provider.   |    
+| cloud_provider                           | A dictionary object containing the name and description of the cloud provider that the machine type belongs to.   |
+| name                                     | The name of the machine type.                               |
+| vcpus                                    | The number of virtual CPUs that the machine type has.        |
+| memory                                   | The amount of memory that the machine type has, represented in gibibytes (GiB).          |
+| has_cuda                                 | A boolean indicating whether or not the machine type has a GPU with CUDA support.      |
+| gpu_model                                | If `has_cuda` is true, this parameter indicates the model of the GPU in the machine type.       |
+| gpus                                     | If `has_cuda` is true, this parameter indicates the number of GPUs in the machine type.                                                                    |
+| gpu_memory                               | If `has_cuda` is true, this parameter indicates the amount of memory available on each GPU, represented in gigabytes (GB).              |
+| from_date                                | The date and time when the machine type became available in the cloud provider, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the machine type is available. If this parameter has a value of null, it means that the machine type is currently available and there is no end date specified.                                                                   | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/types
+{
+  "cloud_provider_id": 0
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "machine_type_id": "0",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "name": "a2-highgpu-1g",
+    "vcpus": 12,
+    "memory": "85 GiB",
+    "has_cuda": true,
+    "gpu_model": "NVIDIA A100",
+    "gpus": 1,
+    "gpu_memory": "40 GB HBM2",
+    "from_date": "2023-03-29T12:18:41.804Z",
+    "to_date": null
+  },
+  ...
+  {
+    "machine_type_id": "127",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "name": "t2d-standard-8",
+    "vcpus": 8,
+    "memory": "32 GiB",
+    "has_cuda": false,
+    "gpu_model": null,
+    "gpus": null,
+    "gpu_memory": null,
+    "from_date": "2023-03-29T12:18:41.804Z",
+    "to_date": null
+  }
+]
+```
+
+## get-provider-machine-type
+
+### Overview
+This api is used to retrieve detailed information about a specific machine type from a cloud provider when cloud provider id and machine tyoeid are provided.
+
+| Request URL                                                                               |  HTTP method         | 
+|-------------------------------------------------------------------------------------------|----------------------|
+| /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/types/:machine_type_id          |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider_id                        | This parameter specifies the cloud provider for which to retrieve machine type information. It is a required parameter.    |    
+| machine_type_id                          | This parameter specifies the ID of the machine type for which to retrieve information. It is a required parameter.   |
+| json-output                              | Specifies the format of the output to be JSON. The `pretty` option formats the JSON output in a human-readable format, while the `default` option provides compact JSON output. By default, the `pretty` option is used.                           |
+| yaml-output                              | Specifies the format of the output to be YAML. If `true` is specified, the output will be in YAML format, otherwise it will be in JSON format. By default, the output format is set to JSON.    |
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_cloud_providers/:cloud_provider_id/machine/types/:machine_type_id
+{
+  "cloud_provider_id": 0,
+  "machine_type_id": 108
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "machine_type_id": "108",
+  "cloud_provider": {
+    "name": "gcp",
+    "description": "Provider for creating infrastructuture on Google Cloud Platform"
+  },
+  "name": "n2d-highmem-64",
+  "vcpus": 64,
+  "memory": "512 GiB",
+  "has_cuda": false,
+  "gpu_model": null,
+  "gpus": null,
+  "gpu_memory": null,
+  "from_date": "2023-03-29T12:18:41.804Z",
+  "to_date": null
+}
+```
+
+## list-disk-machine-types
+
+### Overview
+This api lists the available disk machine types that can be used to create disks in the cloud providers.
+
+| Request URL                                |  HTTP method         | 
+|--------------------------------------------|----------------------|
+| /api/v1/lookup_disk_machine_type           |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| disk_type_id                             | A unique identifier for the disk machine type within the cloud provider.   |    
+| cloud_provider                           | A dictionary object containing the name and description of the cloud provider that the disk machine type belongs to.    |
+| name                                     | The name of the disk machine type.                              |
+| has_fixed_size                           | A boolean value indicating whether the disk size is fixed or variable.        |
+| min_size                                 | The minimum disk size in GB that can be created using this disk machine type.          |
+| max_size                                 | The maximum disk size in GB that can be created using this disk machine type.      |
+| from_date                                | The date and time when the disk machine type became available in the cloud provider, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the disk machine type is available. If this parameter has a value of null, it means that the disk machine type is currently available and there is no end date specified.                  | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_disk_machine_type
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "disk_type_id": "0",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "name": "pd-ssd",
+    "has_fixed_size": false,
+    "min_size": 10,
+    "max_size": 64000,
+    "from_date": "2023-03-29T12:18:41.940Z",
+    "to_date": null
+  },
+  ...
+  {
+    "disk_type_id": "15",
+    "cloud_provider": {
+      "name": "azure",
+      "description": "Provider for creating infrastructure on Azure Cloud Platform"
+    },
+    "name": "UltraSSD_LRS",
+    "has_fixed_size": false,
+    "min_size": 4,
+    "max_size": 65536,
+    "from_date": "2023-03-29T12:18:41.940Z",
+    "to_date": null
+  }
+]
+```
+
+## list-credential-types
+
+### Overview
+This api is used to list all the available credential types in Yeedu, which can be used to authenticate with various cloud providers.
+
+| Request URL                                |  HTTP method         | 
+|--------------------------------------------|----------------------|
+| /api/v1/lookup_credential_type             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| credential_type_id                       | A unique identifier for the disk machine type within the cloud provider.   |    
+| name                                     | The name of the credential type, which can be used to reference it when creating a credential.               |
+| cloud_provider                           | An object that describes the cloud provider associated with this credential type, including the provider's name and description.        |
+| from_date                                | The date and time when the credential type was created, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the credential type is available. If this parameter has a value of null, it means that the credential type is currently available and there is no end date specified.                     | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_credential_type
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "credential_type_id": "0",
+    "name": "gcp",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "from_date": "2023-03-29T12:18:41.800Z",
+    "to_date": null
+  },
+  {
+    "credential_type_id": "1",
+    "name": "aws",
+    "cloud_provider": {
+      "name": "aws",
+      "description": "Provider for creating infrastructuture on Amazon Web Services"
+    },
+    "from_date": "2023-03-29T12:18:41.800Z",
+    "to_date": null
+  },
+  {
+    "credential_type_id": "2",
+    "name": "azure",
+    "cloud_provider": {
+      "name": "azure",
+      "description": "Provider for creating infrastructure on Azure Cloud Platform"
+    },
+    "from_date": "2023-03-29T12:18:41.800Z",
+    "to_date": null
+  }
+]
+```
+
+## list-engine-cluster-instance-status
+
+### Overview
+This api is used to get a list of possible statuses for engine cluster instances.
+
+    INITIATING: The cluster is in the process of being created.
+    RUNNING: The cluster has been created and is currently running.
+    STOPPING: The cluster is in the process of being stopped.
+    STOPPED: The cluster has been stopped.
+    DESTROYING: The cluster is in the process of being destroyed.
+    DESTROYED: The cluster has been destroyed.
+    ERROR: There was an error during the initialization of the instance.
+    RESIZING_UP: The cluster instance is in the process of scaling up.
+    RESIZING_DOWN: The cluster instance is in the process of scaling down.
+
+
+| Request URL                                               |  HTTP method         | 
+|-----------------------------------------------------------|----------------------|
+| /api/v1/lookup_engine_cluster_instance_status             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| engine_cluster_instance_status_id        | A unique identifier for the engine cluster instance status.   |    
+| name                                     | The name of the engine cluster instance status, which is a short, human-readable description of the status.              |
+| description                              | A longer, human-readable description of the engine cluster instance status.        |
+| from_date                                | The date and time when the status was added to the system, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the status is available. If this parameter has a value of null, it means that the status is currently available and there is no end date specified.                                 | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_engine_cluster_instance_status
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "engine_cluster_instance_status_id": "0",
+    "name": "INITIATING",
+    "description": "Cluster will be eventually created",
+    "from_date": "2023-03-29T12:18:41.798Z",
+    "to_date": null
+  }
+  ...
+  {
+    "engine_cluster_instance_status_id": "8",
+    "name": "RESIZING_DOWN",
+    "description": "The cluster instance will scale down",
+    "from_date": "2023-03-29T12:18:41.798Z",
+    "to_date": null
+  }
+]
+```
+
+## list-spark-compute-types
+
+### Overview
+This api is used to get a list of Spark compute types. A Spark compute type refers to the configuration and specifications of the hardware and resources used for executing Spark jobs.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/lookup_spark_compute_type             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| spark_compute_type_id                    | A unique identifier for the Spark compute type.             |    
+| name                                     | The name of the Spark compute type.             |
+| description                              | A brief description of the Spark compute type.        |
+| from_date                                | The date and time from which the Spark compute type is available for use, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the spark compute type is available. If this parameter has a value of null, it means that the status is currently available and there is no end date specified.                         | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_spark_compute_type
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "spark_compute_type_id": "0",
+    "name": "YEEDU",
+    "description": null,
+    "from_date": "2023-03-29T12:18:41.988Z",
+    "to_date": null
+  }
+]
+```
+
+## list-spark-infra-versions
+
+### Overview
+This api is used to list available Spark infrastructure versions along with their specifications. 
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/lookup_spark_infra_version            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| spark_infra_version_id                   | The ID assigned to each Spark infrastructure version.        |    
+| spark_version                            | The version of Apache Spark used in the infrastructure.      |
+| hive_version                             | The version of Apache Hive used in the infrastructure.       |
+| hadoop_version                           | The version of Apache Hadoop used in the infrastructure.     |
+| scala_version                            | The version of Scala programming language used in the infrastructure. |
+| from_date                                | The date and time from which the Spark infrastructure version is available for use, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the spark infrastructure version is available. If this parameter has a value of null, it means that the infrastructure version is currently available and there is no end date specified.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_spark_infra_version
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "spark_infra_version_id": "0",
+    "spark_version": "2.4.8",
+    "hive_version": "3.2.3",
+    "hadoop_version": "2.10.1",
+    "scala_version": "2.11.10",
+    "from_date": "2023-03-29T12:18:41.802Z",
+    "to_date": null
+  },
+  {
+    "spark_infra_version_id": "1",
+    "spark_version": "3.2.2",
+    "hive_version": "3.2.3",
+    "hadoop_version": "3.2.4",
+    "scala_version": "2.12.15",
+    "from_date": "2023-03-29T12:18:41.802Z",
+    "to_date": null
+  }
+]
+```
+
+## list-spark-job-status
+
+### Overview
+This api lists the possible status values of a Spark job along with their corresponding IDs, names, and descriptions. 
+
+    SUBMITTED: The job has been submitted and is waiting for an application ID
+    RUNNING: The job is running and has an application ID
+    DONE: The job has completed successfully
+    ERROR: The job has encountered an error and has failed
+    TERMINATED: The job has been terminated
+    KILLING: The job is being killed
+    KILLED: The job has been killed
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/lookup_spark_job_status               |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| spark_job_status_id                      | A unique identifier for each Spark job status.               |    
+| name                                     | The name of the Spark job status. The different statuses are: `SUBMITTED`,    `RUNNING`, `DONE`, `ERROR`, `TERMINATED`, `KILLING` and `KILLED`.      |
+| description                              | A brief description of the Spark job status.                 |
+| from_date                                | The date and time from which the Spark job status was added to the system, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the spark job status is available. If this parameter has a value of null, it means that the spark job status is currently available and there is no end date specified.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_spark_job_status
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "spark_job_status_id": "0",
+    "name": "SUBMITTED",
+    "description": "Job was submitted, waiting for Application ID",
+    "from_date": "2023-03-29T12:18:42.005Z",
+    "to_date": null
+  },
+  ...
+  {
+    "spark_job_status_id": "8",
+    "name": "KILLED",
+    "description": "The process was killed",
+    "from_date": "2023-03-29T12:18:42.005Z",
+    "to_date": null
+  }
+]
+```
+
+## list-workflow-execution-states
+
+This api lists the possible a workflow can be in, along with their corresponding IDs, names, and descriptions. 
+
+        NONE: 
+        INIT: 
+        LOCK: 
+        SENT: 
+        RECEIVED:
+        EXECUTING: 
+        TERMINATED: 
+        ERROR: 
+        DONE: 
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/lookup_workflow_execution_states      |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| workflow_execution_state_id              | A unique identifier for each workflow execution state.       |    
+| name                                     | A descriptive name for the workflow execution state. For any ideal case, the workflow should be in one of the following states: `NONE`, `INIT`, `LOCK`, `SENT`, `RECEIVED`, `EXECUTING`, `TERMINATED`, `ERROR`, `DONE`.      |
+| description                              | A brief description of the workflow execution state.          |
+| from_date                                | The date and time from which the workflow execution statewas added to the system, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the workflow execution state is available. If this parameter has a value of null, it means that the state is currently available and there is no end date specified.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_workflow_execution_state
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "workflow_execution_state_id": -1,
+    "name": "NONE",
+    "description": "NONE",
+    "from_date": "2023-03-29T12:18:41.981Z",
+    "to_date": null
+  },
+  ...
+  {
+    "workflow_execution_state_id": 99,
+    "name": "DONE",
+    "description": "NONE",
+    "from_date": "2023-03-29T12:18:41.981Z",
+    "to_date": null
+  }
+]
+```
+
+## list-workflow-types
+
+This api lists the different types of workflows along with their corresponding IDs, names, and descriptions. 
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/lookup_workflow_type                  |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| workflow_type_id                         | A unique identifier for each workflow execution state.       |    
+| name                                     | A descriptive name for the workflow execution state. For any ideal case, the workflow should be in one of the following states: `NONE`, `INIT`, `LOCK`, `SENT`, `RECEIVED`, `EXECUTING`, `TERMINATED`, `ERROR`, `DONE`.      |
+| queue_name                               |                                                               |
+| description                              | A brief description of the workflow execution state.          |
+| from_date                                | The date and time from which the workflow execution statewas added to the system, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the workflow execution state is available. If this parameter has a value of null, it means that the state is currently available and there is no end date specified.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/lookup_workflow_type
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "workflow_type_id": "0",
+    "name": "spark_start",
+    "queue_name": "yeedu.workflows.usi.start",
+    "description": null,
+    "from_date": "2023-03-29T12:18:41.986Z",
+    "to_date": null
+  },
+  ...
+  {
+    "workflow_type_id": "8",
+    "name": "cosi_resize_down",
+    "queue_name": "yeedu.workflows.cosi.resize.down",
+    "description": null,
+    "from_date": "2023-03-29T12:18:41.986Z",
+    "to_date": null
+  }
+]
+```
+
+
 ## create-conf
 
 ### Overview
