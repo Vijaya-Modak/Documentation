@@ -1381,6 +1381,56 @@ This api is used to create configuration for a machine.
 |-----------------------------------------------|----------------------|
 | /api/v1/machine                               |     POST             |
 
+### Sample
+
+#### Request
+```bash
+POST /api/v1/machine
+{
+  "network_tags": "yeedu, iap-allow",
+  "labels": "test=dev",
+  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
+  "boot_disk_image_id":1
+  "machine_type_id": 15
+  "is_spot_instance": false
+  "enable_public_ip": false
+  "block_project_ssh_keys": true
+  "network_conf_id": 1 
+  "volume_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "machine_conf_id": "1",
+  "network_tags": [
+    "yeedu",
+    "iap-allow"
+  ],
+  "labels": {
+    "env": "test",
+    "test": "dev",
+    "resource": "yeedu"
+  },
+  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
+  "boot_disk_image_id": "1",
+  "machine_type_id": "15",
+  "is_spot_instance": false,
+  "enable_public_ip": false,
+  "block_project_ssh_keys": true,
+  "bootstrap_shell_script": null,
+  "network_conf_id": "1",
+  "volume_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:24:14.478Z",
+  "from_date": "2023-04-06T08:24:14.478Z",
+  "to_date": null
+}
+```
+
 
 ## list-machine-confs
 
