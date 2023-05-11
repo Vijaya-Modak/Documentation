@@ -1340,6 +1340,37 @@ This api retrieves information about a specific Volume Configuration.
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
 
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/machine/volume/:volume_conf_id
+{
+  "volume_conf_id": 1,
+  "encrypted": "true"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "volume_conf_id": "1",
+  "name": "yeedu volume",
+  "availability_zone_id": "75",
+  "encrypted": true,
+  "size": "375",
+  "disk_type_id": "4",
+  "disk_type_name": "local-ssd",
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:18:06.238Z",
+  "from_date": "2023-04-06T08:15:42.182Z",
+  "to_date": null
+}
+```
 
 ## create-machine-conf
 
@@ -1379,41 +1410,6 @@ This api is used to edit machine configuration.
 | Request URL                                   |  HTTP method         | 
 |-----------------------------------------------|----------------------|
 | /api/v1/machine/:machine_conf_id              |     PUT              |
-
-
-### Sample
-
-#### Request
-```bash
-PUT /api/v1/machine/volume/:volume_conf_id
-{
-  "volume_conf_id": 1,
-  "encrypted": "true"
-}
-```
-
-#### HTTP Response
-```bash
-{
-  "volume_conf_id": "1",
-  "name": "yeedu volume",
-  "availability_zone_id": "75",
-  "encrypted": true,
-  "size": "375",
-  "disk_type_id": "4",
-  "disk_type_name": "local-ssd",
-  "machine_volume_num": 1,
-  "machine_volume_strip_num": 1,
-  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
-  "created_by_id": "1",
-  "modified_by_id": "1",
-  "last_update_date": "2023-04-06T08:18:06.238Z",
-  "from_date": "2023-04-06T08:15:42.182Z",
-  "to_date": null
-}
-```
-
-
 
 ## create-conf
 
