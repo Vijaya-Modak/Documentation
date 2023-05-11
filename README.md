@@ -1341,6 +1341,46 @@ This api retrieves information about a specific Volume Configuration.
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
 
 
+## create-machine-conf
+
+### Overview
+This api is used to create configuration for a machine.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine                               |     POST             |
+
+
+## list-machine-confs
+
+### Overview
+This api is used to list all the machine configurations.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/volume                        |     GET              |
+
+
+## get-machine-conf
+
+### Overview
+This api is used to get specific machine configuration.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/:machine_conf_id              |     GET              |
+
+
+## edit-machine-conf
+
+### Overview
+This api is used to edit machine configuration.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/:machine_conf_id              |     PUT              |
+
+
 ### Sample
 
 #### Request
