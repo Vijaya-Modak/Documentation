@@ -1340,6 +1340,7 @@ This api retrieves information about a specific Volume Configuration.
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
 
+
 ### Sample
 
 #### Request
@@ -1372,94 +1373,1336 @@ PUT /api/v1/machine/volume/:volume_conf_id
 }
 ```
 
-## create-machine-conf
+## create-network-conf
 
 ### Overview
-This api is used to create configuration for a machine.
+This api is used to create a new network configuration with the specified parameters.
 
 | Request URL                                   |  HTTP method         | 
 |-----------------------------------------------|----------------------|
-| /api/v1/machine                               |     POST             |
+| /api/v1/machine/network                       |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| network_project_id                       | This parameter specifies the ID of the project in which the network will be created. A project is a logical container for resources such as instances, networks, and disks.                  |
+| network_name                             | This parameter specifies the name of the network that will be created. A network is a virtualized environment that allows multiple instances to communicate with each other securely.            |
+| subnet                                   | This parameter specifies the subnet range of the network. A subnet is a range of IP addresses in a network that are reserved for specific purposes.           |
+| availability_zone_id                     |  This parameter specifies the ID of the availability zone in which the network will be created. An availability zone is an isolated location within a region that is designed to be resilient to failures in other availability zones.     |
+| cloud_provider_id                        | This parameter specifies the ID of the cloud provider that will be used to create the network. The options are `GCP`, `AWS`, and `AZURE`.   |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
 
 ### Sample
 
 #### Request
 ```bash
-POST /api/v1/machine
+POST /api/v1/machine/network
 {
-  "network_tags": "yeedu, iap-allow",
-  "labels": "test=dev",
-  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
-  "boot_disk_image_id":1
-  "machine_type_id": 15
-  "is_spot_instance": false
-  "enable_public_ip": false
-  "block_project_ssh_keys": true
-  "network_conf_id": 1 
-  "volume_conf_id": 1
+  "network_project_id": "modak-yeedu",
+  "network_name": "modak-yeedu-spark-vpc",
+  "subnet": "custom-subnet-modak-yeedu",
+  "availability_zone_id": 75,
+  "cloud_provider_id": 0
 }
 ```
 
 #### HTTP Response
 ```bash
 {
-  "machine_conf_id": "1",
-  "network_tags": [
-    "yeedu",
-    "iap-allow"
-  ],
-  "labels": {
-    "env": "test",
-    "test": "dev",
-    "resource": "yeedu"
-  },
-  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
-  "boot_disk_image_id": "1",
-  "machine_type_id": "15",
-  "is_spot_instance": false,
-  "enable_public_ip": false,
-  "block_project_ssh_keys": true,
-  "bootstrap_shell_script": null,
   "network_conf_id": "1",
-  "volume_conf_id": "1",
+  "network_project_id": "modak-yeedu",
+  "network_name": "modak-yeedu-spark-vpc",
+  "subnet": "custom-subnet-modak-yeedu",
+  "availability_zone_id": "75",
+  "cloud_provider_id": "0",
   "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
   "created_by_id": "1",
   "modified_by_id": "1",
-  "last_update_date": "2023-04-06T08:24:14.478Z",
-  "from_date": "2023-04-06T08:24:14.478Z",
+  "last_update_date": "2023-04-06T08:18:54.237Z",
+  "from_date": "2023-04-06T08:18:54.237Z",
   "to_date": null
 }
 ```
 
-
-## list-machine-confs
+## list-network-confs
 
 ### Overview
-This api is used to list all the machine configurations.
+This api is used to list the network configurations created.
 
 | Request URL                                   |  HTTP method         | 
 |-----------------------------------------------|----------------------|
-| /api/v1/machine/volume                        |     GET              |
+| /api/v1/machine/network                       |     GET              |
 
 
-## get-machine-conf
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider                           | This option filters the list of network configurations by a specific cloud provider.                  |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/network
+{
+  "cloud_provider": "GCP"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "network_conf_id": "1",
+    "network_project_id": "modak-yeedu",
+    "network_name": "modak-yeedu-spark-vpc",
+    "subnet": "custom-subnet-modak-yeedu",
+    "availability_zone": {
+      "name": "us-central1-a",
+      "region": "us-central1",
+      "description": "Council Bluffs, Iowa, North America"
+    },
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:18:54.237Z",
+    "from_date": "2023-04-06T08:18:54.237Z",
+    "to_date": null
+  }
+]
+```
+
+## get-network-conf
 
 ### Overview
-This api is used to get specific machine configuration.
+This api  is used to get information about a specific network configuration.
 
 | Request URL                                   |  HTTP method         | 
 |-----------------------------------------------|----------------------|
-| /api/v1/machine/:machine_conf_id              |     GET              |
+| /api/v1/machine/network/:network_conf_id      |     GET              |
 
 
-## edit-machine-conf
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| network_conf_id                          |  This parameter is used to provide the ID of the network configuration you want to get information about.             |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/network/:network_conf_id
+{
+  "network_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "network_conf_id": "1",
+  "network_project_id": "modak-yeedu",
+  "network_name": "modak-yeedu-spark-vpc",
+  "subnet": "custom-subnet-modak-yeedu",
+  "availability_zone": {
+    "name": "us-central1-a",
+    "region": "us-central1",
+    "description": "Council Bluffs, Iowa, North America"
+  },
+  "cloud_provider": {
+    "name": "gcp",
+    "description": "Provider for creating infrastructuture on Google Cloud Platform"
+  },
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:18:54.237Z",
+  "from_date": "2023-04-06T08:18:54.237Z",
+  "to_date": null
+}
+```
+
+## edit-network-conf
 
 ### Overview
-This api is used to edit machine configuration.
+This api is used to edit an existing network configuration. 
 
 | Request URL                                   |  HTTP method         | 
 |-----------------------------------------------|----------------------|
-| /api/v1/machine/:machine_conf_id              |     PUT              |
+| /api/v1/machine/network/:network_conf_id      |     PUT              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| network_conf_id                          | The ID of the network configuration that you want to edit.   |
+| network_name                             | The new name for the network configuration.                  |
+| subnet                                   | The new subnet for the network configuration.                |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/machine/network/:network_conf_id
+{
+  "network_conf_id": 1,
+  "network_name": "modak-nabu-spark-vpc"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "network_conf_id": "1",
+  "network_project_id": "modak-yeedu",
+  "network_name": "modak-nabu-spark-vpc",
+  "subnet": "custom-subnet-modak-yeedu",
+  "availability_zone_id": "75",
+  "cloud_provider_id": "0",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:20:23.536Z",
+  "from_date": "2023-04-06T08:18:54.237Z",
+  "to_date": null
+}
+```
+
+## create-boot-disk-image-conf
+
+### Overview
+This api is used to create a boot disk image configuration for a specific cloud provider. 
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/boot_disk_image               |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider_id                        | The ID of the cloud provider where the boot disk image configuration will be created.   |
+| boot_disk_image                          | The name of the boot disk image to create the configuration for.                 |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/machine/boot_disk_image
+{
+  "cloud_provider_id": 0,
+  "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "boot_disk_image_id": "1",
+  "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts",
+  "cloud_provider_id": "0",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:22:56.479Z",
+  "from_date": "2023-04-06T08:22:56.479Z",
+  "to_date": null
+}
+```
+
+## get-boot-disk-image-conf
+
+### Overview
+This api is used to retrieve information about a specific boot disk image configuration.
+
+| Request URL                                                       |  HTTP method         | 
+|-------------------------------------------------------------------|----------------------|
+| /api/v1/machine/boot_disk_image/:boot_disk_image_id               |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| boot_disk_image_id                       | The ID of the boot disk image configuration to retrieve information about.   |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/boot_disk_image/:boot_disk_image_id
+{
+  "boot_disk_image_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "boot_disk_image_id": "1",
+  "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts",
+  "cloud_provider": {
+    "name": "gcp",
+    "description": "Provider for creating infrastructuture on Google Cloud Platform"
+  },
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:22:56.479Z",
+  "from_date": "2023-04-06T08:22:56.479Z",
+  "to_date": null
+}
+```
+
+## list-boot-disk-image-confs
+
+### Overview
+This api is used to list all the boot disk image configurations available in the specified cloud provider
+
+| Request URL                                  |  HTTP method         | 
+|----------------------------------------------|----------------------|
+| /api/v1/machine/boot_disk_image              |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider                           | Optional parameter to filter the boot disk image configurations by cloud provider (GCP, AWS, or AZURE). If not specified, it will list all boot disk image configurations across all cloud providers.      |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/boot_disk_image
+{
+  "cloud_provider": "GCP"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "boot_disk_image_id": "1",
+    "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    },
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:22:56.479Z",
+    "from_date": "2023-04-06T08:22:56.479Z",
+    "to_date": null
+  }
+]
+```
+
+## create-credential-conf
+
+### Overview
+This api is used to create a new credential configuration by specifying the credential type, base64-encoded credentials, and a name for the configuration.
+
+| Request URL                                  |  HTTP method         | 
+|----------------------------------------------|----------------------|
+| /api/v1/credentials_config                   |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| credential_type_id                       | This parameter is used to specify the ID of the type of credential being created. The credential type defines the format and structure of the credentials being stored. It is a required parameter.      |
+| base64_encoded_credentials               | This parameter is used to specify the credentials in Base64-encoded format.          |
+| name                                     | This parameter is used to specify a name for the credential being created. The name can be used to identify the credential later on. It is a required parameter.                 |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/credentials_config
+{
+  "credential_type_id": 0,
+  "base64_encoded_credentials": "ew0KICAieWVlZHVfY3JlZGVudGlhbHMiOiAiRHVtbXkgQ3JlZGVudGlhbHMgQ29uZmlndXJhdGlvbiINCn0",
+  "name": "modakyeedu-svc"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "credentials_conf_id": "1",
+  "credential_type_id": "0",
+  "name": "modakyeedu-svc",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:28:34.993Z",
+  "from_date": "2023-04-06T08:28:34.993Z",
+  "to_date": null
+}
+```
+
+## list-credential-confs
+
+### Overview
+This api is used to list all the credential configurations.
+
+| Request URL                                  |  HTTP method         | 
+|----------------------------------------------|----------------------|
+| /api/v1/credentials_config                   |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider                           | This is an optional parameter that can be used to filter the list of credential configurations based on the cloud provider. Valid values for this parameter are `GCP`, `AWS`, and `AZURE`.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/credentials_config
+{
+  "cloud_provider": "GCP"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "credentials_conf_id": "1",
+    "credential_type": {
+      "name": "gcp",
+      "cloud_provider": {
+        "name": "gcp",
+        "description": "Provider for creating infrastructuture on Google Cloud Platform"
+      }
+    },
+    "name": "modakyeedu-svc",
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:28:34.993Z",
+    "from_date": "2023-04-06T08:28:34.993Z",
+    "to_date": null
+  }
+]
+```
+
+## get-credential-conf
+
+### Overview
+This api is used to get information about a specific credential configuration.
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/credentials_config/:credentials_conf_id            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| credentials_conf_id                      | The ID of the credential configuration for which information is being requested.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/credentials_config/:credentials_conf_id
+{
+  "credentials_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "credentials_conf_id": "1",
+  "credential_type": {
+    "name": "gcp",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    }
+  },
+  "name": "modakyeedu-svc",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:28:34.993Z",
+  "from_date": "2023-04-06T08:28:34.993Z",
+  "to_date": null
+}
+```
+
+## edit-credential-conf
+
+### Overview
+This api is used to edit an existing credential configuration by providing a specific `credentials_conf_id`.
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/credentials_config/:credentials_conf_id            |     PUT              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| credentials_conf_id                      | The unique identifier of the credential configuration you want to edit.     |
+| base64_encoded_credentials               | The updated base64-encoded credentials you want to set for the credential configuration.         |
+| name                                     | The updated name you want to set for the credential configuration. This option is optional.        |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/credentials_config/:credentials_conf_id
+{
+  "credentials_conf_id": 1,
+  "name": "modak-yeedu-svc"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "credentials_conf_id": "1",
+  "credential_type_id": "0",
+  "name": "modak-yeedu-svc",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:30:32.206Z",
+  "from_date": "2023-04-06T08:28:34.993Z",
+  "to_date": null
+}
+```
+
+## delete-credential-conf
+
+### Overview
+This api is used to delete a specific credential configuration.
+
+| Request URL                                                |  HTTP method         | 
+|------------------------------------------------------------|----------------------|
+| /api/v1/credentials_config/:credentials_conf_id            |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| credentials_conf_id                      | This is a required parameter that specifies the ID of the credential configuration to be deleted.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/credentials_config/:credentials_conf_id
+{
+  "credentials_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted Credentials Configuration: 1"
+}
+```
+
+## create-object-storage-manager
+
+### Overview
+This api is used to create an Object Storage Manager resource.
+
+| Request URL                               |  HTTP method         | 
+|-------------------------------------------|----------------------|
+| /api/v1/object_storage_manager            |     POST            |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| name                                     | This parameter is used to specify the name of the object storage manager that will be created.     |
+| credentials_conf_id                      | This parameter is used to specify the ID of the credential configuration that will be used to access the object storage service.                                                             |
+| object_storage_bucket_name               | This parameter is used to specify the name of the object storage bucket that will be used to store and retrieve data.                                                             |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/object_storage_manager
+{
+  "name": "Yeedu Object Storage Manager",
+  "credentials_conf_id": 1,
+  "object_storage_bucket_name": "modak-yeedu-nabu"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "object_storage_manager_id": "1",
+  "name": "Yeedu Object Storage Manager",
+  "credentials_conf_id": "1",
+  "object_storage_bucket_name": "modak-yeedu-nabu",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:31:23.409Z",
+  "from_date": "2023-04-06T08:31:23.409Z",
+  "to_date": null
+}
+```
+
+## list-object-storage-managers
+
+### Overview
+This api lists all the Object Storage Managers available in the cloud provider specified using the `cloud_provider` option, or lists all Object Storage Managers if no cloud provider is specified. 
+
+| Request URL                               |  HTTP method         | 
+|-------------------------------------------|----------------------|
+| /api/v1/object_storage_manager            |     GET             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider                           | This option filters the list of Object Storage Managers by cloud provider. The available values are `GCP`, `AWS`, and `AZURE`.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/object_storage_manager
+{
+  "cloud_provider": "GCP"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "object_storage_manager_id": "1",
+    "name": "Yeedu Object Storage Manager",
+    "credentials_config": {
+      "name": "modak-yeedu-svc",
+      "credential_type": {
+        "name": "gcp",
+        "cloud_provider": {
+          "name": "gcp",
+          "description": "Provider for creating infrastructuture on Google Cloud Platform"
+        }
+      }
+    },
+    "object_storage_bucket_name": "modak-yeedu-nabu",
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:31:23.409Z",
+    "from_date": "2023-04-06T08:31:23.409Z",
+    "to_date": null
+  }
+]
+```
+
+## get-object-storage-manager
+
+### Overview
+This api is used to get information about a specific object storage manager. 
+
+| Request URL                                                          |  HTTP method         | 
+|----------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id            |     GET             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | This parameter is used to provide ID of the object storage manager to get information about.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/object_storage_manager/:object_storage_manager_id
+{
+  "object_storage_manager_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "object_storage_manager_id": "1",
+  "name": "Yeedu Object Storage Manager",
+  "credentials_config": {
+    "name": "modak-yeedu-svc",
+    "credential_type": {
+      "name": "gcp",
+      "cloud_provider": {
+        "name": "gcp",
+        "description": "Provider for creating infrastructuture on Google Cloud Platform"
+      }
+    }
+  },
+  "object_storage_bucket_name": "modak-yeedu-nabu",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:31:23.409Z",
+  "from_date": "2023-04-06T08:31:23.409Z",
+  "to_date": null
+}
+```
+
+## edit-object-storage-manager
+
+### Overview
+This api is used to edit information about a specific Object Storage Manager. 
+
+| Request URL                                                          |  HTTP method         | 
+|----------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id            |     PUT             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | This option is required and specifies the ID of the Object Storage Manager that you want to edit.     |
+| name                                     | This option is optional and allows you to change the name of the Object Storage Manager.           |
+| object_storage_bucket_name               | This option is optional and allows you to change the name of the object storage bucket associated with the Object Storage Manager.             |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/object_storage_manager/:object_storage_manager_id
+{
+  "object_storage_manager_id": 1,
+  "object_storage_bucket_name": "modakyeedu-nabu"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "object_storage_manager_id": "1",
+  "name": "Yeedu Object Storage Manager",
+  "credentials_conf_id": "1",
+  "object_storage_bucket_name": "modakyeedu-nabu",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:33:59.433Z",
+  "from_date": "2023-04-06T08:31:23.409Z",
+  "to_date": null
+}
+```
+
+## delete-object-storage-manager
+
+### Overview
+This api is used to delete a specific Object Storage Manager.  
+
+| Request URL                                                          |  HTTP method         | 
+|----------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id            |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | This parameter is required and specifies the ID of the Object Storage Manager to be deleted.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/object_storage_manager/:object_storage_manager_id
+{
+  "object_storage_manager_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted Object Storage Manager Configuration: 1"
+}
+```
+
+## create-object-storage-manager-file
+
+### Overview
+This api is used to create/upload a file on the object storage provided.
+
+| Request URL                                                                |  HTTP method         | 
+|----------------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id/files            |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | This parameter is required and specifies the ID of the object storage manager that manages the storage where the file will be uploaded.     |
+| local_file_path                          | The path of the local file to upload.                                                             |
+| preserve_path                            | This parameter specifies whether to preserve the directory structure of the local file path when uploading the file. The default is false.             |
+| overwrite                                | This parameter specifies whether to overwrite the file on the object storage if it already exists. The default is false.            |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/object_storage_manager/:object_storage_manager_id/files
+{
+  "object_storage_manager_id": 1,
+  "local_file_path": "/home/user/opt/spark-3.2.0-bin-hadoop2.7/jars/spark-sql_2.12-3.2.0.jar"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "object_storage_manager_file_id": "1",
+  "object_storage_manager_id": "1",
+  "file_name": "spark-sql_2.12-3.2.0.jar",
+  "full_file_path": "file:///yeedu/object-storage-manager/spark-sql_2.12-3.2.0.jar",
+  "file_size_bytes": "8328946",
+  "file_type": "jar",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:36:09.053Z",
+  "from_date": "2023-04-06T08:36:09.053Z",
+  "to_date": null
+}
+```
+
+## list-object-storage-manager-files
+
+### Overview
+This api is used to list all the available Object Storage Manager files associated with a particular Object Storage Manager.
+
+| Request URL                                                                |  HTTP method         | 
+|----------------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id/files            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | The ID of the Object Storage Manager for which you want to list the files.    |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/object_storage_manager/:object_storage_manager_id/files
+{
+  "object_storage_manager_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "object_storage_manager_file_id": "1",
+    "object_storage_manager": {
+      "object_storage_manager_id": "1",
+      "object_storage_bucket_name": "modak-yeedu-nabu",
+      "credentials_config": {
+        "name": "modak-yeedu-svc",
+        "credential_type": {
+          "name": "gcp"
+        }
+      }
+    },
+    "file_name": "spark-sql_2.12-3.2.0.jar",
+    "full_file_path": "file:///yeedu/object-storage-manager/spark-sql_2.12-3.2.0.jar",
+    "file_size_bytes": "8328946",
+    "file_type": "jar",
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:36:09.053Z",
+    "from_date": "2023-04-06T08:36:09.053Z",
+    "to_date": null
+  }
+]
+```
+
+## get-object-storage-manager-file
+
+### Overview
+This api is used to list all the available Object Storage Manager files associated with a particular Object Storage Manager.
+
+| Request URL                                                                         |  HTTP method         | 
+|-------------------------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id/files/:file_id            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | This parameter is used to specify the ID of the Object Storage Manager to which the file belongs, to get information about a specific Object Storage Manager File.    |
+| file_id                                  | This parameter is used to specify the ID of the file that you want to retrieve information about.                  |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/object_storage_manager/:object_storage_manager_id/files/:file_id
+{
+  "object_storage_manager_id": 1,
+  "file_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "object_storage_manager_file_id": "1",
+  "object_storage_manager": {
+    "object_storage_manager_id": "1",
+    "object_storage_bucket_name": "modak-yeedu-nabu",
+    "credentials_config": {
+      "name": "modak-yeedu-svc",
+      "credential_type": {
+        "name": "gcp"
+      }
+    }
+  },
+  "file_name": "spark-sql_2.12-3.2.0.jar",
+  "full_file_path": "file:///yeedu/object-storage-manager/spark-sql_2.12-3.2.0.jar",
+  "file_size_bytes": "8328946",
+  "file_type": "jar",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:36:09.053Z",
+  "from_date": "2023-04-06T08:36:09.053Z",
+  "to_date": null
+}
+```
+
+## delete-object-storage-manager-file
+
+### Overview
+This api is used to delete a specific file stored in an object storage manager.
+
+| Request URL                                                                         |  HTTP method         | 
+|-------------------------------------------------------------------------------------|----------------------|
+| /api/v1/object_storage_manager/:object_storage_manager_id/files/:file_id            |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| object_storage_manager_id                | Required parameter that identifies the object storage manager where the file is stored.    |
+| file_id                                  | Required parameter that identifies the file to be deleted. You need to provide the ID of the file.                 |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/object_storage_manager/:object_storage_manager_id/files/:file_id
+{
+  "object_storage_manager_id": 1,
+  "file_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "The File spark-sql_2.12-3.2.0.jar has been deleted."
+}
+```
+
+## create-hive-metastore-conf
+
+### Overview
+This api is used to create a Hive Metastore configuration by providing the paths to various XML configuration files required by the Hive Metastore.
+
+| Request URL                             |  HTTP method         | 
+|-----------------------------------------|----------------------|
+| /api/v1/hive_metastore_config           |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| hive_site_xml_file_path                  | This parameter specifies the path to the hive-site.xml configuration file. This file contains configuration information for the Hive metastore, such as the database used to store metadata and the location of the warehouse directory where tables are stored.      |
+| core_site_xml_file_path                  | This parameter specifies the path to the core-site.xml configuration file. This file contains configuration information for Hadoop core components, such as the location of the Hadoop file system (HDFS) and the default block size.                |
+| hdfs_site_xml_file_path                 | This parameter specifies the path to the hdfs-site.xml configuration file. This file contains configuration information for Hadoop distributed file system (HDFS), such as the replication factor and block size.             |
+| krb5_conf_file_path                     | This is an optional parameter that specifies the path to the krb5.conf configuration file, which is required if you are using Kerberos authentication.             |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/hive_metastore_config
+{
+  "hive_site_xml_file_path": "/home/user/Documents/hive-site.xml",
+  "core_site_xml_file_path": "/home/user/Documents/core-site.xml",
+  "hdfs_site_xml_file_path": "/home/user/Documents/hdfs-site.xml"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "hive_metastore_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:42:14.616Z",
+  "from_date": "2023-04-06T08:42:14.616Z",
+  "to_date": null
+}
+```
+
+## list-hive-metastore-confs
+
+### Overview
+This api is used to list all the available configurations for the Hive metastore.
+
+| Request URL                             |  HTTP method         | 
+|-----------------------------------------|----------------------|
+| /api/v1/hive_metastore_config           |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/hive_metastore_config
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "hive_metastore_conf_id": "1",
+    "hive-site.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<configuration>\n  <property>\n    <name>javax.jdo.option.ConnectionURL</name>\n    <value>jdbc:postgresql://localhost:5432/metastore</value>\n    <description>JDBC connect string for a JDBC metastore</description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionDriverName</name>\n    <value>org.postgresql.Driver</value>\n    <description>Driver class name for a JDBC metastore</description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionUserName</name>\n    <value>hive</value>\n    <description>username to use against metastore database</description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionPassword</name>\n    <value>hive</value>\n    <description>password to use against metastore database</description>\n  </property>\n  <property>\n    <name>hive.metastore.schema.verification</name>\n    <value>false</value>\n  </property>\n  <property>\n     <name>datanucleus.autoCreateSchema</name>\n     <value>false</value>\n     <description>Creates necessary schema on a startup if one doesn't exist</description>\n  </property>\n  <property>\n     <name>hive.server2.enable.doAs </name>\n     <value>false</value>\n  </property>\n  <property>\n         <name>hive.security.authorization.enabled</name>\n         <value>false</value>\n </property>\n</configuration>\n\n",
+    "core-site.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<!--\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License. See accompanying LICENSE file.\n-->\n\n<!-- Put site-specific property overrides in this file. -->\n\n<configuration>\n    <property>\n        <name>hadoop.tmp.dir</name>\n        <value>/usr/bin/data/tmp</value>\n    </property>\n    <property>\n        <name>fs.defaultFS</name>\n        <value>hdfs://localhost:9000</value>\n    </property>\n    <property>\n        <name>fs.default.name</name>\n        <value>hdfs://localhost:9000</value>\n    </property>\n        <property>\n            <name>hadoop.proxyuser.username.groups</name>\n        <value>*</value>\n        </property>\n        <property>\n                <name>hadoop.proxyuser.username.hosts</name>\n                <value>*</value>\n        </property>\n                <property>\n            <name>hadoop.proxyuser.hue.groups</name>\n        <value>*</value>\n        </property>\n        <property>\n                <name>hadoop.proxyuser.hue.hosts</name>\n                <value>*</value>\n        </property>\n</configuration>\n\n",
+    "hdfs-site.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<!--\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License. See accompanying LICENSE file.\n-->\n\n<!-- Put site-specific property overrides in this file. -->\n\n<configuration>\n    <property>\n                <name>dfs.permissions</name>\n                <value>false</value>\n        </property>\n    <property>\n            <name>dfs.namenode.name.dir</name>\n            <value>/usr/bin/data/nameNode</value>\n    </property>\n    <property>\n            <name>dfs.datanode.data.dir</name>\n            <value>/usr/bin/data/dataNode</value>\n    </property>\n    <property>\n                <name>dfs.datanode.max.transfer.threads</name>\n                <value>8192</value>\n        </property>\n    <property>\n          <name>dfs.namenode.checkpoint.dir</name>\n          <value>/usr/bin/data/nameNodeSecondary</value>\n    </property>\n    <property>\n        <name>dfs.safemode.threshold.pct</name>\n        <value>0</value>\n    </property>\n        <property>\n                <name>dfs.namenode.http-address</name>\n                <value>localhost:50070</value>\n        </property>\n    <property>\n                <name>dfs.namenode.secondary.http-address</name>\n                <value>localhost:50090</value>\n        </property>\n    <property>\n        <name>dfs.namenode.acls.enabled</name>\n        <value>true</value>\n    </property>\n    <property>\n        <name>dfs.replication</name>\n        <value>1</value>\n    </property>\n        <property>\n                <name>dfs.webhdfs.enabled</name>\n                <value>true</value>\n        </property>\n</configuration>\n\n",
+    "krb5.conf": null,
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": 1,
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": 1,
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:42:14.616422+00:00",
+    "from_date": "2023-04-06T08:42:14.616422+00:00",
+    "to_date": "infinity"
+  }
+]
+```
+
+## get-hive-metastore-conf
+
+### Overview
+This api is used to retrieve information about a specific Hive Metastore Configuration.
+
+| Request URL                                                      |  HTTP method         | 
+|------------------------------------------------------------------|----------------------|
+| /api/v1/hive_metastore_config/:hive_metastore_conf_id            |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| hive_metastore_conf_id                   | This parameter is required and it expects the ID of the Hive Metastore Configuration to retrieve information about.     |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/hive_metastore_config/:hive_metastore_conf_id
+{
+  "hive_metastore_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "hive_metastore_conf_id": "1",
+  "hive-site.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<configuration>\n  <property>\n    <name>javax.jdo.option.ConnectionURL</name>\n    <value>jdbc:postgresql://localhost:5432/metastore</value>\n    <description>JDBC connect string for a JDBC metastore</description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionDriverName</name>\n    <value>org.postgresql.Driver</value>\n    <description>Driver class name for a JDBC metastore</description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionUserName</name>\n    <value>hive</value>\n    <description>username to use against metastore database</description>\n  </property>\n  <property>\n    <name>javax.jdo.option.ConnectionPassword</name>\n    <value>hive</value>\n    <description>password to use against metastore database</description>\n  </property>\n  <property>\n    <name>hive.metastore.schema.verification</name>\n    <value>false</value>\n  </property>\n  <property>\n     <name>datanucleus.autoCreateSchema</name>\n     <value>false</value>\n     <description>Creates necessary schema on a startup if one doesn't exist</description>\n  </property>\n  <property>\n     <name>hive.server2.enable.doAs </name>\n     <value>false</value>\n  </property>\n  <property>\n         <name>hive.security.authorization.enabled</name>\n         <value>false</value>\n </property>\n</configuration>\n\n",
+  "core-site.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<!--\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License. See accompanying LICENSE file.\n-->\n\n<!-- Put site-specific property overrides in this file. -->\n\n<configuration>\n    <property>\n        <name>hadoop.tmp.dir</name>\n        <value>/usr/bin/data/tmp</value>\n    </property>\n    <property>\n        <name>fs.defaultFS</name>\n        <value>hdfs://localhost:9000</value>\n    </property>\n    <property>\n        <name>fs.default.name</name>\n        <value>hdfs://localhost:9000</value>\n    </property>\n        <property>\n            <name>hadoop.proxyuser.username.groups</name>\n        <value>*</value>\n        </property>\n        <property>\n                <name>hadoop.proxyuser.username.hosts</name>\n                <value>*</value>\n        </property>\n                <property>\n            <name>hadoop.proxyuser.hue.groups</name>\n        <value>*</value>\n        </property>\n        <property>\n                <name>hadoop.proxyuser.hue.hosts</name>\n                <value>*</value>\n        </property>\n</configuration>\n\n",
+  "hdfs-site.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"configuration.xsl\"?>\n<!--\n  Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n  Unless required by applicable law or agreed to in writing, software\n  distributed under the License is distributed on an \"AS IS\" BASIS,\n  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n  See the License for the specific language governing permissions and\n  limitations under the License. See accompanying LICENSE file.\n-->\n\n<!-- Put site-specific property overrides in this file. -->\n\n<configuration>\n    <property>\n                <name>dfs.permissions</name>\n                <value>false</value>\n        </property>\n    <property>\n            <name>dfs.namenode.name.dir</name>\n            <value>/usr/bin/data/nameNode</value>\n    </property>\n    <property>\n            <name>dfs.datanode.data.dir</name>\n            <value>/usr/bin/data/dataNode</value>\n    </property>\n    <property>\n                <name>dfs.datanode.max.transfer.threads</name>\n                <value>8192</value>\n        </property>\n    <property>\n          <name>dfs.namenode.checkpoint.dir</name>\n          <value>/usr/bin/data/nameNodeSecondary</value>\n    </property>\n    <property>\n        <name>dfs.safemode.threshold.pct</name>\n        <value>0</value>\n    </property>\n        <property>\n                <name>dfs.namenode.http-address</name>\n                <value>localhost:50070</value>\n        </property>\n    <property>\n                <name>dfs.namenode.secondary.http-address</name>\n                <value>localhost:50090</value>\n        </property>\n    <property>\n        <name>dfs.namenode.acls.enabled</name>\n        <value>true</value>\n    </property>\n    <property>\n        <name>dfs.replication</name>\n        <value>1</value>\n    </property>\n        <property>\n                <name>dfs.webhdfs.enabled</name>\n                <value>true</value>\n        </property>\n</configuration>\n\n",
+  "krb5.conf": null,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": 1,
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": 1,
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:42:14.616422+00:00",
+  "from_date": "2023-04-06T08:42:14.616422+00:00",
+  "to_date": "infinity"
+}
+```
+
+## edit-hive-metastore-conf
+
+### Overview
+This api is used to edit an existing Hive Metastore Configuration by specifying the `hive_metastore_conf_id`.
+
+| Request URL                                                       |  HTTP method         | 
+|-------------------------------------------------------------------|----------------------|
+| /api/v1/hive_metastore_config/:hive_metastore_conf_id             |     PUT              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| hive_metastore_conf_id                   | The ID of the Hive Metastore Configuration that you want to edit.    |
+| hive_site_xml_file_path                  | The path to the hive-site.xml file that contains the Hive configuration settings.                |
+| core_site_xml_file_path                  | The path to the core-site.xml file that contains the Hadoop core configuration settings.             |
+| hdfs_site_xml_file_path                  | The path to the hdfs-site.xml file that contains the HDFS configuration settings.             |
+| krb5_conf_file_path                      | The path to the krb5.conf file that contains the Kerberos configuration settings.              |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/hive_metastore_config/:hive_metastore_conf_id
+{
+  "hive_metastore_conf_id": 1,
+  "krb5_conf_file_path": "/home/user/Documents/krb5.conf"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "hive_metastore_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:44:21.896Z",
+  "from_date": "2023-04-06T08:42:14.616Z",
+  "to_date": null
+}
+```
+
+## delete-hive-metastore-conf
+
+### Overview
+This api is used to delete a specific Hive Metastore Configuration.
+
+| Request URL                                                       |  HTTP method         | 
+|-------------------------------------------------------------------|----------------------|
+| /api/v1/hive_metastore_config/:hive_metastore_conf_id             |     DELETE           |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| hive_metastore_conf_id                   | Specifies the ID of the Hive Metastore Configuration to delete.    |
+| file_id                                  | Required parameter that identifies the file to be deleted. You need to provide the ID of the file.                 |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+DELETE /api/v1/hive_metastore_config/:hive_metastore_conf_id
+{
+  "hive_metastore_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "message": "Deleted Hive Metastore Configuration: 1"
+}
+```
 
 ## create-conf
 
