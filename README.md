@@ -344,8 +344,7 @@ The following are the endpoints available for an Admin at Group level
 - [delete-group-role](#delete-group-role-1)
 
 
-
-## list-providers
+ ## list-providers
 
 ### Overview
 This api is used to get information about available cloud providers 
@@ -1020,6 +1019,7 @@ GET /api/v1/lookup_spark_job_status
 
 ## list-workflow-execution-states
 
+### Overview
 This api lists the possible a workflow can be in, along with their corresponding IDs, names, and descriptions. 
 
         NONE: 
@@ -1078,6 +1078,7 @@ GET /api/v1/lookup_workflow_execution_state
 
 ## list-workflow-types
 
+### Overview
 This api lists the different types of workflows along with their corresponding IDs, names, and descriptions. 
 
 | Request URL                                   |  HTTP method         | 
@@ -1089,12 +1090,12 @@ This api lists the different types of workflows along with their corresponding I
 
 | **Parameter**                            | **Value**                                                    |
 |------------------------------------------|--------------------------------------------------------------|
-| workflow_type_id                         | A unique identifier for each workflow execution state.       |    
-| name                                     | A descriptive name for the workflow execution state. For any ideal case, the workflow should be in one of the following states: `NONE`, `INIT`, `LOCK`, `SENT`, `RECEIVED`, `EXECUTING`, `TERMINATED`, `ERROR`, `DONE`.      |
-| queue_name                               |                                                               |
-| description                              | A brief description of the workflow execution state.          |
-| from_date                                | The date and time from which the workflow execution statewas added to the system, represented in ISO 8601 format with a UTC timezone.           |
-| to_date                                  | This parameter represents the date and time until which the workflow execution state is available. If this parameter has a value of null, it means that the state is currently available and there is no end date specified.              | 
+| workflow_type_id                         | A unique identifier for each workflow type.                   |    
+| name                                     | The name of the workflow type that represents the action it performs.      |
+| queue_name                               | The name of the queue that holds the workflow type.           |
+| description                              | A brief description of the workflow type that explains its functionality.         |
+| from_date                                | The date and time when the workflow type was created or added to the system, represented in ISO 8601 format with a UTC timezone.           |
+| to_date                                  | This parameter represents the date and time until which the workflow type is available. If this parameter has a value of null, it means that the workflow state is currently available and there is no end date specified.              | 
 
 
 ### Sample
@@ -1126,6 +1127,252 @@ GET /api/v1/lookup_workflow_type
   }
 ]
 ```
+
+## create-volume-conf
+
+### Overview
+This api is used to create configuration for a volume. This configuration can be used to create a volume with specific settings. 
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/volume                        |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| name                                     | This parameter is used to provide a name for the volume configuration that will be created. It's a required parameter.       |    
+| availability_zone_id                     | This parameter is used to specify the ID of the availability zone where you want to create the volume. It's a required parameter and you need to specify an availability zone ID to create the volume configuration.     |
+| encrypted                                | This parameter is used to specify whether the volume should be encrypted or not. It's a required parameter and you need to specify either "true" or "false" to create the volume configuration.         |
+| size                                     | This parameter is used to specify the size of the volume in GB. It's an optional parameter and you can specify a value or leave it blank. If you don't specify a value, the default size of the volume will be used.          |
+| disk_type_id                             | This parameter is used to specify the disk type ID of the volume. It's a required parameter and you need to specify a disk type ID to create the volume configuration.         |
+| machine_volume_num                       | This parameter is used to specify the number of disks to be configured for a specific disk type. It's a required parameter and you need to specify a value to create the volume configuration.               |
+| machine_volume_strip_num                 | This parameter is used to specify the number of volumes that will be striped to create a single volume group. It's a required parameter and you need to specify a value to create the volume configuration.             |
+| json-output                              | This is an optional parameter to specify the format of the output. The default value is `pretty`. If set to default, the output will be in a compact format          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/machine/volume
+{
+  "availability_zone_id": 75,
+  "encrypted": "false",
+  "disk_type_id": 4,
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "volume_conf_id": "1",
+  "name": "yeedu volume",
+  "availability_zone_id": "75",
+  "encrypted": false,
+  "size": "375",
+  "disk_type_id": "4",
+  "disk_type_name": "local-ssd",
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:15:42.182Z",
+  "from_date": "2023-04-06T08:15:42.182Z",
+  "to_date": null
+}
+```
+
+## list-volume-confs
+
+### Overview
+This api is used to list all the available volume configurations created. 
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/volume                        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider                           | This parameter is optional and can be used to filter the list of volume configurations based on the cloud provider. Valid options for this parameter are `GCP`, `AWS`, and `AZURE`.             |
+| json-output                              | This is an optional parameter to specify the format of the output. The default value is `pretty`. If set to default, the output will be in a compact format          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/volume
+{
+  "cloud_provider": "GCP"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "volume_conf_id": "1",
+    "name": "yeedu volume",
+    "availability_zone": {
+      "name": "us-central1-a",
+      "region": "us-central1",
+      "description": "Council Bluffs, Iowa, North America"
+    },
+    "encrypted": false,
+    "size": "375",
+    "disk_type": {
+      "name": "local-ssd",
+      "has_fixed_size": true,
+      "min_size": 375,
+      "max_size": 375
+    },
+    "machine_volume_num": 1,
+    "machine_volume_strip_num": 1,
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:15:42.182Z",
+    "from_date": "2023-04-06T08:15:42.182Z",
+    "to_date": null
+  }
+]
+```
+
+## get-volume-conf
+
+### Overview
+This api retrieves information about a specific Volume Configuration.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/volume/:volume_conf_id        |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| volume_conf_id                           | This is a required parameter and should be followed by the ID of the Volume Configuration for which information is being requested.            |
+| json-output                              | This is an optional parameter to specify the format of the output. The default value is `pretty`. If set to default, the output will be in a compact format          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/volume/:volume_conf_id
+{
+  "volume_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "volume_conf_id": "1",
+  "name": "yeedu volume",
+  "availability_zone": {
+    "name": "us-central1-a",
+    "region": "us-central1",
+    "description": "Council Bluffs, Iowa, North America"
+  },
+  "encrypted": false,
+  "size": "375",
+  "disk_type": {
+    "name": "local-ssd",
+    "has_fixed_size": true,
+    "min_size": 375,
+    "max_size": 375
+  },
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:15:42.182Z",
+  "from_date": "2023-04-06T08:15:42.182Z",
+  "to_date": null
+}
+```
+
+## edit-volume-conf
+
+### Overview
+This api retrieves information about a specific Volume Configuration.
+
+| Request URL                                   |  HTTP method         | 
+|-----------------------------------------------|----------------------|
+| /api/v1/machine/volume/:volume_conf_id        |     PUT              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| volume_conf_id                           | The ID of the Volume Configuration to edit.                  |
+| name                                     | The new name for the Volume Configuration. This option is optional.            |
+| encrypted                                | Whether the Volume Configuration should be encrypted or not. This option is optional and takes a boolean value of true or false.           |
+| machine_volume_num                       | The number of volumes to be attached to each machine using this Volume Configuration. This option is optional.     |
+| machine_volume_strip_num                 | The number of stripes to be used per volume. This option is optional.   |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/machine/volume/:volume_conf_id
+{
+  "volume_conf_id": 1,
+  "encrypted": "true"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "volume_conf_id": "1",
+  "name": "yeedu volume",
+  "availability_zone_id": "75",
+  "encrypted": true,
+  "size": "375",
+  "disk_type_id": "4",
+  "disk_type_name": "local-ssd",
+  "machine_volume_num": 1,
+  "machine_volume_strip_num": 1,
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:18:06.238Z",
+  "from_date": "2023-04-06T08:15:42.182Z",
+  "to_date": null
+}
+```
+
 
 
 ## create-conf
