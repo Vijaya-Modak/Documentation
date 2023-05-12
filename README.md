@@ -1754,6 +1754,376 @@ GET /api/v1/machine/boot_disk_image
 ]
 ```
 
+## create-machine-conf
+
+### Overview
+This api is used to create a machine configuration . A machine configuration includes information about the virtual machine instance that you want to create, such as the machine type, disk image, network configuration, and more.
+
+| Request URL                 |  HTTP method         | 
+|-----------------------------|----------------------|
+| /api/v1/machine             |     POST             |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| network_tags                             | Optional parameter to provide a list of network tags for the machine. These tags are used to control inbound and outbound traffic to the machine. Multiple tags can be provided by separating them with commas.    |
+| labels                                   | Optional parameter to provide a list of labels for the machine. Labels can be used to organize and categorize resources.               |
+| service_account_instance_profile         | Required parameter to provide the name of the service account instance profile for the machine. This is used to give the machine access to specific resources in your Yeedu account.            |
+| boot_disk_image_id                       | Required parameter to provide the ID of the boot disk image that the machine will use. This image contains the operating system and other software installed on the machine.             |
+| machine_type_id                          | Required parameter to provide the ID of the machine type that the machine will use. This determines the hardware specifications of the virtual machine instance.               |
+| is_spot_instance                         | Optional parameter to indicate whether the machine is a spot instance or not. A spot instance is a type of virtual machine that is offered at a lower price than regular instances, but can be terminated at any time.             |
+| enable_public_ip                         | Optional parameter to indicate whether the machine should be assigned a public IP address or not.                |
+| block_project_ssh_keys                   | Optional parameter to indicate whether SSH access to the machine should be restricted to only authorized keys or not.               |
+| bootstrap_shell_script_file_path         | Optional parameter to provide the file path for the shell script to be executed when the machine is first launched. This script can be used to configure the machine with additional software or settings.            |
+| network_conf_id                          | Required parameter to provide the ID of the network configuration that the machine will use. This includes information about the VPC network and subnet that the machine will be launched in.            |
+| volume_conf_id                           | Required parameter to provide the ID of the volume configuration that the machine will use. This includes information about the attached storage volume for the machine.            |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+POST /api/v1/machine
+{
+  "network_tags": "yeedu,iap-allow",
+  "labels": "env=test",
+  "labels": "test=dev",
+  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com"
+  "boot_disk_image_id": 1,
+  "machine_type_id": 15,
+  "is_spot_instance": "false",
+  "enable_public_ip": "true",
+  "block_project_ssh_keys": "true",
+  "network_conf_id": 1,
+  "volume_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "machine_conf_id": "1",
+  "network_tags": [
+    "yeedu",
+    "iap-allow"
+  ],
+  "labels": {
+    "env": "test",
+    "test": "dev",
+    "resource": "yeedu"
+  },
+  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
+  "boot_disk_image_id": "1",
+  "machine_type_id": "15",
+  "is_spot_instance": false,
+  "enable_public_ip": true,
+  "block_project_ssh_keys": true,
+  "bootstrap_shell_script": null,
+  "network_conf_id": "1",
+  "volume_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:24:14.478Z",
+  "from_date": "2023-04-06T08:24:14.478Z",
+  "to_date": null
+}
+```
+
+## list-machine-confs
+
+### Overview
+This api lists all the machine configurations in the cloud provider.
+
+| Request URL                 |  HTTP method         | 
+|-----------------------------|----------------------|
+| /api/v1/machine             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| cloud_provider                           | This optional parameter allows you to filter the list of machine configurations based on the cloud provider. You can choose from GCP, AWS, or AZURE as values for this parameter.    |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine
+{
+  "cloud_provider": "GCP"
+}
+```
+
+#### HTTP Response
+```bash
+[
+  {
+    "machine_conf_id": "1",
+    "network_tags": [
+      "yeedu",
+      "iap-allow"
+    ],
+    "labels": {
+      "env": "test",
+      "test": "dev",
+      "resource": "yeedu"
+    },
+    "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
+    "boot_disk_image_config": {
+      "boot_disk_image_id": "1",
+      "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts",
+      "cloud_provider": {
+        "name": "gcp",
+        "description": "Provider for creating infrastructuture on Google Cloud Platform"
+      }
+    },
+    "machine_type": {
+      "machine_type_id": "15",
+      "name": "c2d-highcpu-16",
+      "vcpus": 16,
+      "memory": "32 GiB",
+      "has_cuda": false,
+      "gpu_model": null,
+      "gpus": null,
+      "gpu_memory": null
+    },
+    "is_spot_instance": false,
+    "enable_public_ip": true,
+    "block_project_ssh_keys": true,
+    "bootstrap_shell_script": null,
+    "machine_network": {
+      "network_conf_id": "1",
+      "network_project_id": "modak-yeedu",
+      "network_name": "modak-yeedu-spark-vpc",
+      "subnet": "custom-subnet-modak-yeedu",
+      "availability_zone": {
+        "name": "us-central1-a",
+        "region": "us-central1",
+        "description": "Council Bluffs, Iowa, North America"
+      }
+    },
+    "machine_volume_config": {
+      "volume_conf_id": "1",
+      "name": "yeedu volume",
+      "encrypted": false,
+      "size": "375",
+      "machine_volume_num": 1,
+      "machine_volume_strip_num": 1,
+      "availability_zone": {
+        "name": "us-central1-a",
+        "region": "us-central1",
+        "description": "Council Bluffs, Iowa, North America"
+      },
+      "disk_type": {
+        "name": "local-ssd",
+        "has_fixed_size": true,
+        "min_size": 375,
+        "max_size": 375
+      }
+    },
+    "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+    "created_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "modified_by": {
+      "user_id": "1",
+      "username": "YSU0000"
+    },
+    "last_update_date": "2023-04-06T08:24:14.478Z",
+    "from_date": "2023-04-06T08:24:14.478Z",
+    "to_date": null
+  }
+]
+```
+
+## get-machine-conf
+
+### Overview
+This api is used to retrieve information about a specific machine configuration by providing its ID.
+
+| Request URL                                  |  HTTP method         | 
+|----------------------------------------------|----------------------|
+| /api/v1/machine/:machine_conf_id             |     GET              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| machine_conf_id                          | Required parameter that specifies the ID of the machine configuration to retrieve information about.    |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+GET /api/v1/machine/:machine_conf_id
+{
+  "machine_conf_id": 1
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "machine_conf_id": "1",
+  "network_tags": [
+    "yeedu",
+    "iap-allow"
+  ],
+  "labels": {
+    "env": "test",
+    "test": "dev",
+    "resource": "yeedu"
+  },
+  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
+  "boot_disk_image_config": {
+    "boot_disk_image_id": "1",
+    "boot_disk_image": "ubuntu-os-cloud/ubuntu-2004-lts",
+    "cloud_provider": {
+      "name": "gcp",
+      "description": "Provider for creating infrastructuture on Google Cloud Platform"
+    }
+  },
+  "machine_type": {
+    "machine_type_id": "15",
+    "name": "c2d-highcpu-16",
+    "vcpus": 16,
+    "memory": "32 GiB",
+    "has_cuda": false,
+    "gpu_model": null,
+    "gpus": null,
+    "gpu_memory": null
+  },
+  "is_spot_instance": false,
+  "enable_public_ip": true,
+  "block_project_ssh_keys": true,
+  "bootstrap_shell_script": null,
+  "machine_network": {
+    "network_conf_id": "1",
+    "network_project_id": "modak-yeedu",
+    "network_name": "modak-yeedu-spark-vpc",
+    "subnet": "custom-subnet-modak-yeedu",
+    "availability_zone": {
+      "name": "us-central1-a",
+      "region": "us-central1",
+      "description": "Council Bluffs, Iowa, North America"
+    }
+  },
+  "machine_volume_config": {
+    "volume_conf_id": "1",
+    "name": "yeedu volume",
+    "encrypted": false,
+    "size": "375",
+    "machine_volume_num": 1,
+    "machine_volume_strip_num": 1,
+    "availability_zone": {
+      "name": "us-central1-a",
+      "region": "us-central1",
+      "description": "Council Bluffs, Iowa, North America"
+    },
+    "disk_type": {
+      "name": "local-ssd",
+      "has_fixed_size": true,
+      "min_size": 375,
+      "max_size": 375
+    }
+  },
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "modified_by": {
+    "user_id": "1",
+    "username": "YSU0000"
+  },
+  "last_update_date": "2023-04-06T08:24:14.478Z",
+  "from_date": "2023-04-06T08:24:14.478Z",
+  "to_date": null
+}
+```
+
+## edit-machine-conf
+
+### Overview
+This api is used to edit the properties of a specific machine configuration.
+
+| Request URL                                  |  HTTP method         | 
+|----------------------------------------------|----------------------|
+| /api/v1/machine/:machine_conf_id             |     PUT              |
+
+
+### Parameters
+
+| **Parameter**                            | **Value**                                                    |
+|------------------------------------------|--------------------------------------------------------------|
+| machine_conf_id                          | This parameter is required and specifies the ID of the machine configuration to edit.    |
+| network_tags                             | This parameter is optional and allows you to add or update network tags for the machine configuration.             |
+| labels                                   | This parameter is optional and allows you to add or update labels for the machine configuration.                |
+| service_account_instance_profile         | This parameter is optional and allows you to update the service account instance profile for the machine configuration.            |
+| is_spot_instance                         | This parameter is optional and allows you to update whether the machine configuration should use spot instances or not.               |
+| enable_public_ip                         | This parameter is optional and allows you to update whether the machine configuration should have a public IP address or not.              |
+| block_project_ssh_keys                   | This parameter is optional and allows you to update whether the machine configuration should block project SSH keys or not.            |
+| bootstrap_shell_script_file_path         | This parameter is optional and allows you to update the path of the bootstrap shell script file for the machine configuration.            |
+| json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
+| yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
+
+
+### Sample
+
+#### Request
+```bash
+PUT /api/v1/machine/:machine_conf_id 
+{
+  "machine_conf_id": 2,
+  "network_tags": "yeedu,network"
+}
+```
+
+#### HTTP Response
+```bash
+{
+  "machine_conf_id": "1",
+  "network_tags": [
+    "yeedu",
+    "network"
+  ],
+  "labels": {
+    "env": "test",
+    "test": "dev",
+    "resource": "yeedu"
+  },
+  "service_account_instance_profile": "yeedu-modak-nabu@modak-yeedu.iam.gserviceaccount.com",
+  "boot_disk_image_id": "1",
+  "machine_type_id": "15",
+  "is_spot_instance": false,
+  "enable_public_ip": true,
+  "block_project_ssh_keys": true,
+  "bootstrap_shell_script": null,
+  "network_conf_id": "1",
+  "volume_conf_id": "1",
+  "tenant_id": "be2a7d36-f555-4f78-b1bd-eafeefc285db",
+  "created_by_id": "1",
+  "modified_by_id": "1",
+  "last_update_date": "2023-04-06T08:26:49.913Z",
+  "from_date": "2023-04-06T08:24:14.478Z",
+  "to_date": null
+}
+```
+
 ## create-credential-conf
 
 ### Overview
