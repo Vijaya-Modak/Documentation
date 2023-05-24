@@ -1,6 +1,6 @@
-# RESTful API
+# YEEDU_USER_MANUAL
 
-This section describes the services available in the RESTful-API of **YEEDU**. You can use this API to create virtual machines and run spark jobs on it which provides cost optimization and unified apache spark infrastructure.
+This section describes the services available in **YEEDU**. You can create virtual machines and run spark jobs on it which provides cost optimization and unified apache spark infrastructure.
 
 The three major cloud providers that `yeedu` support are:
 - **GCP**
