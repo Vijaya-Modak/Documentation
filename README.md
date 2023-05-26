@@ -1143,10 +1143,10 @@ This api is used to create configuration for a volume. This configuration can be
 | **Parameter**                            | **Value**                                                    |
 |------------------------------------------|--------------------------------------------------------------|
 | name                                     | This parameter is used to provide a name for the volume configuration that will be created. It's a required parameter.       |    
-| availability_zone_id                     | This parameter is used to specify the ID of the availability zone where you want to create the volume. It's a required parameter and you need to specify an availability zone ID to create the volume configuration.     |
+| availability_zone_id                     | This parameter is used to specify the ID of the availability zone where you want to create the volume. It's a required parameter and you need to specify an availability zone ID to create the volume configuration. You can select required availability zone id from lookup_machine_available_zones table.     |
 | encrypted                                | This parameter is used to specify whether the volume should be encrypted or not. It's a required parameter and you need to specify either "true" or "false" to create the volume configuration.         |
 | size                                     | This parameter is used to specify the size of the volume in GB. It's an optional parameter and you can specify a value or leave it blank. If you don't specify a value, the default size of the volume will be used.          |
-| disk_type_id                             | This parameter is used to specify the disk type ID of the volume. It's a required parameter and you need to specify a disk type ID to create the volume configuration.         |
+| disk_type_id                             | This parameter is used to specify the disk type ID of the volume. It's a required parameter and you need to specify a disk type ID to create the volume configuration. You can get id of the disk type from lookup_disk_machine_type table.        |
 | machine_volume_num                       | This parameter is used to specify the number of disks to be configured for a specific disk type. It's a required parameter and you need to specify a value to create the volume configuration.               |
 | machine_volume_strip_num                 | This parameter is used to specify the number of volumes that will be striped to create a single volume group. It's a required parameter and you need to specify a value to create the volume configuration.             |
 | json-output                              | This is an optional parameter to specify the format of the output. The default value is `pretty`. If set to default, the output will be in a compact format          |
@@ -1390,7 +1390,7 @@ This api is used to create a new network configuration with the specified parame
 | network_project_id                       | This parameter specifies the ID of the project in which the network will be created. A project is a logical container for resources such as instances, networks, and disks.                  |
 | network_name                             | This parameter specifies the name of the network that will be created. A network is a virtualized environment that allows multiple instances to communicate with each other securely.            |
 | subnet                                   | This parameter specifies the subnet range of the network. A subnet is a range of IP addresses in a network that are reserved for specific purposes.           |
-| availability_zone_id                     |  This parameter specifies the ID of the availability zone in which the network will be created. An availability zone is an isolated location within a region that is designed to be resilient to failures in other availability zones.     |
+| availability_zone_id                     |  This parameter specifies the ID of the availability zone in which the network will be created. An availability zone is an isolated location within a region that is designed to be resilient to failures in other availability zones. You can get the required availability zone id from lookup_machine_available_zones table.     |
 | cloud_provider_id                        | This parameter specifies the ID of the cloud provider that will be used to create the network. The options are `GCP`, `AWS`, and `AZURE`.   |
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
@@ -1771,14 +1771,14 @@ This api is used to create a machine configuration . A machine configuration inc
 | network_tags                             | Optional parameter to provide a list of network tags for the machine. These tags are used to control inbound and outbound traffic to the machine. Multiple tags can be provided by separating them with commas.    |
 | labels                                   | Optional parameter to provide a list of labels for the machine. Labels can be used to organize and categorize resources.               |
 | service_account_instance_profile         | Required parameter to provide the name of the service account instance profile for the machine. This is used to give the machine access to specific resources in your Yeedu account.            |
-| boot_disk_image_id                       | Required parameter to provide the ID of the boot disk image that the machine will use. This image contains the operating system and other software installed on the machine.             |
-| machine_type_id                          | Required parameter to provide the ID of the machine type that the machine will use. This determines the hardware specifications of the virtual machine instance.               |
+| boot_disk_image_id                       | Required parameter to provide the ID of the boot disk image that the machine will use. This image contains the operating system and other software installed on the machine. You can get this id for a specific boot disk image from ` /api/v1/machine/boot_disk_image` endpoint.            |
+| machine_type_id                          | Required parameter to provide the ID of the machine type that the machine will use. This determines the hardware specifications of the virtual machine instance. You can get machine_type_id from lookup_machine_types table.               |
 | is_spot_instance                         | Optional parameter to indicate whether the machine is a spot instance or not. A spot instance is a type of virtual machine that is offered at a lower price than regular instances, but can be terminated at any time.             |
 | enable_public_ip                         | Optional parameter to indicate whether the machine should be assigned a public IP address or not.                |
 | block_project_ssh_keys                   | Optional parameter to indicate whether SSH access to the machine should be restricted to only authorized keys or not.               |
 | bootstrap_shell_script_file_path         | Optional parameter to provide the file path for the shell script to be executed when the machine is first launched. This script can be used to configure the machine with additional software or settings.            |
-| network_conf_id                          | Required parameter to provide the ID of the network configuration that the machine will use. This includes information about the VPC network and subnet that the machine will be launched in.            |
-| volume_conf_id                           | Required parameter to provide the ID of the volume configuration that the machine will use. This includes information about the attached storage volume for the machine.            |
+| network_conf_id                          | Required parameter to provide the ID of the network configuration that the machine will use. This includes information about the VPC network and subnet that the machine will be launched in. You can select this id from `/api/v1/machine/network` endpoint.           |
+| volume_conf_id                           | Required parameter to provide the ID of the volume configuration that the machine will use. This includes information about the attached storage volume for the machine. You can select volume_conf_id from `/api/v1/machine/volume` endpoint.           |
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
 
@@ -2138,7 +2138,7 @@ This api is used to create a new credential configuration by specifying the cred
 
 | **Parameter**                            | **Value**                                                    |
 |------------------------------------------|--------------------------------------------------------------|
-| credential_type_id                       | This parameter is used to specify the ID of the type of credential being created. The credential type defines the format and structure of the credentials being stored. It is a required parameter.      |
+| credential_type_id                       | This parameter is used to specify the ID of the type of credential being created. The credential type defines the format and structure of the credentials being stored. It is a required parameter. You can get this id from lookup_credential_type table.     |
 | base64_encoded_credentials               | This parameter is used to specify the credentials in Base64-encoded format.          |
 | name                                     | This parameter is used to specify a name for the credential being created. The name can be used to identify the credential later on. It is a required parameter.                 |
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
@@ -2384,7 +2384,7 @@ This api is used to create an Object Storage Manager resource.
 | **Parameter**                            | **Value**                                                    |
 |------------------------------------------|--------------------------------------------------------------|
 | name                                     | This parameter is used to specify the name of the object storage manager that will be created.     |
-| credentials_conf_id                      | This parameter is used to specify the ID of the credential configuration that will be used to access the object storage service.                                                             |
+| credentials_conf_id                      | This parameter is used to specify the ID of the credential configuration that will be used to access the object storage service. You can select this id from `/api/v1/credentials_config` endpoint                                                            |
 | object_storage_bucket_name               | This parameter is used to specify the name of the object storage bucket that will be used to store and retrieve data.                                                             |
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
@@ -2638,13 +2638,12 @@ This api is used to create/upload a file on the object storage provided.
 
 | **Parameter**                            | **Value**                                                    |
 |------------------------------------------|--------------------------------------------------------------|
-| object_storage_manager_id                | This parameter is required and specifies the ID of the object storage manager that manages the storage where the file will be uploaded.     |
+| object_storage_manager_id                | This parameter is required and specifies the ID of the object storage manager that manages the storage where the file will be uploaded. You can get this id from `/api/v1/object_storage_manager` endpoint.     |
 | local_file_path                          | The path of the local file to upload.                                                             |
 | preserve_path                            | This parameter specifies whether to preserve the directory structure of the local file path when uploading the file. The default is false.             |
 | overwrite                                | This parameter specifies whether to overwrite the file on the object storage if it already exists. The default is false.            |
 | json-output                              | The format of the output when using JSON. It can be either `pretty` or `default`. The default value is `pretty`.          |
 | yaml-output                              | This is an optional parameter to specify whether or not the output should be in YAML format. The default value is `false`. If set to `true`, the output will be in YAML format.              | 
-
 
 ### Sample
 
@@ -3093,13 +3092,13 @@ This command is used to create a cluster configuration with all the required con
 | name                                               | This parameter is used to provide a name for the configuration that will be created. It can be any string that helps to identify the configuration.          |
 | description                                        | This parameter is used to provide a description for the configuration. It can be any string that describes the purpose or characteristics of the cluster that will be created using this configuration.                          |
 | cloud_project_id                                   | This parameter is used to provide the ID of the cloud project where the cluster will be created. It is a unique identifier that is assigned to the cloud project by the cloud provider.       |
-| object_storage_manager_id	                         | This parameter is used to provide the ID of the object storage manager that will be used by the cluster. The object storage manager is responsible for storing and managing the data used by the cluster. We get this ID from object storage manager configuration.            |
-| credentials_conf_id                                | This parameter is used to provide the ID of the credentials configuration that will be used by the cluster. The credentials configuration contains the necessary authentication information like accesskey, secret key or any other authentication tokens required.                               |
+| object_storage_manager_id	                         | This parameter is used to provide the ID of the object storage manager that will be used by the cluster. The object storage manager is responsible for storing and managing the data used by the cluster. We get this ID from object storage manager configuration.           |
+| credentials_conf_id                                | This parameter is used to provide the ID of the credentials configuration that will be used by the cluster. The credentials configuration contains the necessary authentication information like accesskey, secret key or any other authentication tokens required. You can get this id from credential configuration.                             |
 | machine_conf_id	                                   | This parameter is used to provide the ID of the machine configuration that will be used by the cluster. The machine configuration file contains the specifications for the virtual machines that will be used by the cluster. We get this ID from machine configuration.            |
-| spark_config_id                                    | This parameter is used to provide the ID of the Spark configuration that will be used by the cluster. The Spark configuration file contains the settings and parameters for the Spark engine that will be used by the cluster. This parameter is optional.                      |
+| spark_config_id                                    | This parameter is used to provide the ID of the Spark configuration that will be used by the cluster. The Spark configuration file contains the settings and parameters for the Spark engine that will be used by the cluster. This parameter is optional. You can get this id from lookup_spark_compute_type table.                     |
 | hive_metastore_conf_id	                           |  This parameter is used to provide the ID of the Hive metastore configuration that will be used by the cluster. The Hive metastore configuration file contains the settings and parameters for the Hive metastore that will be used by the cluster. This parameter is optional. We get this ID from hive metastore configuration.             |
 | cloud_provider_id                                  | This parameter is used to provide the ID of the cloud provider where the cluster will be created. It is a unique identifier that is assigned to the cloud provider.                    |
-| spark_infra_version_id	                           | This parameter is used to provide the ID of the Spark infrastructure version that will be used by the cluster. The Spark infrastructure version contains the software packages and dependencies required to run the Spark engine on the cluster.               |
+| spark_infra_version_id	                           | This parameter is used to provide the ID of the Spark infrastructure version that will be used by the cluster. The Spark infrastructure version contains the software packages and dependencies required to run the Spark engine on the cluster. You can get this id from lookup_spark_infra_version table.               |
 | max_parallel_spark_job_execution_per_instance      | This parameter is used to provide the maximum number of parallel Spark job executions per instance. The default value is 5. This parameter is optional.   |
 | standalone_workers_number	                         | If the cluster_type is STANDALONE, we need to provide the workers number. This parameter is optional.           |
 | cluster_type           | This parameter is used to provide the type of cluster that will be created. It can be either YEEDU, STANDALONE, or CLUSTER.                         |
@@ -3108,7 +3107,6 @@ This command is used to create a cluster configuration with all the required con
 | is_cuda	                                           | This parameter is used to indicate whether or not the cluster will have CUDA support. It accepts a value of true or false.                              |
 | --json-output                         |  This parameter is used to specify the format of the JSON output. The default is pretty. This parameter is optional.          |
 | --yaml-output                         | This parameter is used to specify whether or not to output the configuration file in YAML format. The default is false. This parameter is optional.          |
-
 
 ### Sample
 
@@ -3534,7 +3532,7 @@ This api is used to create a new cluster instance using a predefined configurati
 | instance_name                                      | optional parameter to specify the name of the cluster instance to be created.    |
 | idle_timeout_ms                                    | This parameter is used to modify the idle timeout of the cluster instance. The idle timeout is the time (in milliseconds) after which an idle instance will be automatically shutdown. By default, this timeout is set to 2 hours (7200000 milliseconds). To change the idle timeout, you can specify a new value (in milliseconds) for this parameter.  |
 | auto_shutdown                                      | This parameter is used to enable or disable the auto-shutdown feature of the cluster instance. When enabled, the instance will be automatically shutdown after the idle timeout expires. To enable auto-shutdown, set this parameter to "true". To disable auto-shutdown, set it to "false".     |
-| cluster_conf_id                                    | required parameter to specify the configuration ID for the cluster to be created.  |
+| cluster_conf_id                                    | required parameter to specify the configuration ID for the cluster to be created. We get this id from cluster configuration.  |
 | json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
 | yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
 
@@ -3793,7 +3791,7 @@ This api is used to start the cluster instance
 
 | **Parameter**                                      | **Value**                                                    |
 |----------------------------------------------------|--------------------------------------------------------------|
-| cluster_id                                      | This parameter is used to specify the ID of the cluster instance that you want to start.     |
+| cluster_id                                      | This parameter is used to specify the ID of the cluster instance that you want to start. We get this id from cluster instance.   |
 | cluster_name                                    | This parameter is used to specify the name of the cluster instance that you want to start.  |      |
 | json-output                                        | optional parameter to specify the format of the output. The default value is pretty. If set to default, the output will be in a compact format    |
 | yaml-output                                        | optional parameter to specify whether or not the output should be in YAML format. The default value is false. If set to true, the output will be in YAML format.  |
@@ -4055,7 +4053,7 @@ This api is used to create an Apache spark job configuration.
 
 | **Parameter**                                      | **Value**                                                    |
 |----------------------------------------------------|--------------------------------------------------------------|
-| cluster_id                                      | The ID of the cluster where the job will be executed.     |
+| cluster_id                                      | The ID of the cluster where the job will be executed. We get this id from cluster instance table.    |
 | name                                            | The name of the job which is unique.  |      |
 | files                                         | specifies a comma-separated list of files to be placed in the working directory of the driver and executor processes.  |
 | properties_file                                      | This parameter specifies the path to a file containing Spark properties to set on the SparkConf.     |
@@ -4456,7 +4454,7 @@ This api is used to run an Apache Spark job with required `job_conf_id` or `job_
 
 | **Parameter**                                      | **Value**                                                    |
 |----------------------------------------------------|--------------------------------------------------------------|
-| job_conf_id                                   | 	The ID of the Spark job configuration to run.  |      
+| job_conf_id                                   | 	The ID of the Spark job configuration to run. We get this id from job configuration. |      
 | job_conf_name                                 | The name of the Spark job configuration to run.  |
 | json-output                                   | The format of the JSON output. Possible values are `pretty` (default) or `default`.  |      
 | yaml-output                                        | Set to `true` to get the output in YAML format, otherwise set to `false` (default).   |
