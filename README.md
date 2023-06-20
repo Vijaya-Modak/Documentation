@@ -1020,17 +1020,7 @@ GET /api/v1/lookup_spark_job_status
 ## list-workflow-execution-states
 
 ### Overview
-This api lists the possible a workflow can be in, along with their corresponding IDs, names, and descriptions. 
-
-        NONE: 
-        INIT: 
-        LOCK: 
-        SENT: 
-        RECEIVED:
-        EXECUTING: 
-        TERMINATED: 
-        ERROR: 
-        DONE: 
+This api lists the possible states a workflow can have, along with their corresponding IDs, names, and descriptions. 
 
 | Request URL                                   |  HTTP method         | 
 |-----------------------------------------------|----------------------|
